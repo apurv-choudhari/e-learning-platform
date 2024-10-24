@@ -1,14 +1,17 @@
 import mysql.connector
 from mysql.connector import errorcode
+from dotenv import load_dotenv
 import manageDB as mdb
 import os
 
+load_dotenv()
 
 # Database Credentials
 # DBMS_USER
 # DBMS_PASS
 
 try:
+    print(os.getenv('DBMS_USER'))
     reservationConnection = mysql.connector.connect(
         user=os.getenv('DBMS_USER'),
         password=os.getenv('DBMS_PASS'), 

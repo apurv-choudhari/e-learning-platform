@@ -31,4 +31,3 @@ def createDB(conn):
 
     except Error as e:
         print(f"An error occurred: {e}")
-
