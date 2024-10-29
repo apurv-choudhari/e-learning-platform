@@ -24,10 +24,17 @@ try:
 
     if mdb.clearAll(cursor):
         print("Database Cleared.")
+
     if mdb.createDB(cursor):
         print("Database Creation Successful.")
     else:
         print("Database Creation Failed.")
+    
+    if mdb.populateDB(cursor):
+        print("Database Population Successful.")
+    else:
+        print("Database Population Failed.")
+
 except mysql.connector.Error as err:
     if err.errno == errorcode.ER_ACCESS_DENIED_ERROR: 
         print('Invalid credentials')

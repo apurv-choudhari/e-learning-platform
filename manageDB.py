@@ -1,9 +1,9 @@
 
 from mysql.connector import Error
 
-def createDB(cursor):
+def executeSQLQueries(cursor, file):
     try:
-        with open('setupDB.sql', 'r') as file:
+        with open(file, 'r') as file:
             sql_script = file.read()
             sql_commands = sql_script.split(';')
             for command in sql_commands:
@@ -15,6 +15,12 @@ def createDB(cursor):
         print(f"An error occurred: {e}")
         return False
     return True
+
+def createDB(cursor):
+    return executeSQLQueries(cursor, "setupDB.sql")
+
+def populateDB(cursor):
+    return executeSQLQueries(cursor, "populate_data.sql")
 
 def clearAll(cursor):
     try:
