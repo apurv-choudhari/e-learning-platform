@@ -1,33 +1,31 @@
 
 from mysql.connector import Error
-def createDB(conn):
+
+def createDB(cursor):
     try:
-        cursor = conn.cursor()
-        cursor.execute('''
-        CREATE TABLE IF NOT EXISTS users (
-            id INT AUTO_INCREMENT PRIMARY KEY,
-            name VARCHAR(100) NOT NULL,
-            age INT NOT NULL
-        )
-        ''')
-        cursor.execute('''
-        INSERT INTO users (name, age)
-        VALUES (%s, %s)
-        ''', ("Alice", 30))
-
-        # Commit the transaction to save the data in the database
-        conn.commit()
-
-        # Retrieve data from the table
-        cursor.execute('SELECT * FROM users')
-        rows = cursor.fetchall()
-
-        # Display the retrieved data
-        for row in rows:
-            print(row)
-
-        # Close the cursor and connection
-        cursor.close()
-
+        with open('setupDB.sql', 'r') as file:
+            sql_script = file.read()
+            sql_commands = sql_script.split(';')
+            for command in sql_commands:
+                # print(command)
+                command = command.strip()
+                if command:
+                    cursor.execute(command)
     except Error as e:
         print(f"An error occurred: {e}")
+        return False
+    return True
+
+def clearAll(cursor):
+    try:
+        cursor.execute("SHOW TABLES")
+        tables_to_drop = cursor.fetchall()
+        table_names = [table[0] for table in tables_to_drop]
+        print(table_names)
+        cursor.execute("SET FOREIGN_KEY_CHECKS = 0;")
+        drop_query = f"DROP TABLE IF EXISTS {', '.join(table_names)};"
+        cursor.execute(drop_query)
+    except Error as e:
+        print(f"An error occurred: {e}")
+        return False
+    return True
