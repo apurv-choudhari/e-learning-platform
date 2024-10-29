@@ -71,7 +71,7 @@ CREATE TABLE enroll (
 CREATE TABLE chapter (
     chapter_id INT PRIMARY KEY AUTO_INCREMENT,
     textbook_id INT,
-    chapter_number INT NOT NULL,
+    chapter_number VARCHAR(255) NOT NULL,
     title VARCHAR(255) NOT NULL,
     is_hidden BOOLEAN NOT NULL,
     created_by INT NOT NULL,
@@ -84,7 +84,7 @@ CREATE TABLE chapter (
 CREATE TABLE section (
     section_id INT PRIMARY KEY AUTO_INCREMENT,
     chapter_id INT,
-    section_no INT NOT NULL,
+    section_no VARCHAR(255) NOT NULL,
     title VARCHAR(255) NOT NULL,
     is_hidden BOOLEAN NOT NULL,
     created_by INT NOT NULL,
@@ -95,9 +95,10 @@ CREATE TABLE section (
 );
 
 CREATE TABLE content_block (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    type VARCHAR(50) NOT NULL,
+    content_block_id INT PRIMARY KEY AUTO_INCREMENT,
+    is_type VARCHAR(50) NOT NULL,
     section_id INT,
+    block_no VARCHAR(255) NOT NULL,
     is_hidden BOOLEAN NOT NULL,
     created_by INT NOT NULL,
     updated_by INT NOT NULL,
@@ -108,20 +109,22 @@ CREATE TABLE content_block (
 
 CREATE TABLE text (
     text_id INT PRIMARY KEY AUTO_INCREMENT,
-    text_content TEXT NOT NULL
+    content_block_id INT NOT NULL,
+    text_content TEXT NOT NULL,
+    FOREIGN KEY (content_block_id) REFERENCES content_block(content_block_id)
 );
 
 CREATE TABLE image (
     image_id INT PRIMARY KEY AUTO_INCREMENT,
+    content_block_id INT NOT NULL,
     image_content BLOB NOT NULL,
-    alt_text VARCHAR(255)
+    alt_text VARCHAR(255),
+    FOREIGN KEY (content_block_id) REFERENCES content_block(content_block_id)
 );
 
 CREATE TABLE activity (
     activity_id INT PRIMARY KEY AUTO_INCREMENT,
     section_id INT,
-    question_id INT,
-    question_text TEXT NOT NULL,
     is_hidden BOOLEAN NOT NULL,
     created_by INT NOT NULL,
     updated_by INT NOT NULL,
@@ -130,19 +133,28 @@ CREATE TABLE activity (
     FOREIGN KEY (updated_by) REFERENCES user(user_id)
 );
 
-CREATE TABLE answer_choice (
-    option_id INT PRIMARY KEY AUTO_INCREMENT,
-    option_text TEXT NOT NULL,
-    is_correct BOOLEAN NOT NULL,
-    explanation TEXT,
-    activity_id INT,
+CREATE TABLE question(
+    question_id INT PRIMARY KEY AUTO_INCREMENT,
+    question_no VARCHAR(255),
+    question_text TEXT NOT NULL,
+    option1 VARCHAR(255) NOT NULL,
+    option1_explanation TEXT NOT NULL,
+    option2 VARCHAR(255) NOT NULL,
+    option2_explanation TEXT NOT NULL,
+    option3 VARCHAR(255) NOT NULL,
+    option3_explanation TEXT NOT NULL,
+    option4 VARCHAR(255) NOT NULL,
+    option4_explanation VARCHAR(255) NOT NULL,
+    correct_answer INT NOT NULL,
+    activity_id INT NOT NULL, 
     is_hidden BOOLEAN NOT NULL,
     created_by INT NOT NULL,
     updated_by INT NOT NULL,
-    FOREIGN KEY (activity_id) REFERENCES activity(activity_id),
+    FOREIGN KEY(activity_id) REFERENCES activity(activity_id),
     FOREIGN KEY (created_by) REFERENCES user(user_id), 
     FOREIGN KEY (updated_by) REFERENCES user(user_id)
 );
+
 
 CREATE TABLE notification (
     notif_id INT PRIMARY KEY AUTO_INCREMENT,
