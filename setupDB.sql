@@ -1,5 +1,5 @@
 CREATE TABLE user (
-    user_id INT PRIMARY KEY AUTO_INCREMENT,
+    user_id VARCHAR(255) PRIMARY KEY,
     email VARCHAR(255) NOT NULL UNIQUE,
     first_name VARCHAR(100) NOT NULL,
     last_name VARCHAR(100) NOT NULL,
@@ -10,41 +10,41 @@ CREATE TABLE user (
 CREATE TABLE textbook (
     textbook_id INT PRIMARY KEY AUTO_INCREMENT,          
     title VARCHAR(255) NOT NULL,         
-    created_by INT NOT NULL,              
-    updated_by INT NOT NULL,
+    created_by VARCHAR(255) NOT NULL,             
+    updated_by VARCHAR(255) NOT NULL,
     FOREIGN KEY (created_by) REFERENCES user(user_id), 
     FOREIGN KEY (updated_by) REFERENCES user(user_id)
 );
 
 CREATE TABLE admin (
-    admin_id INT PRIMARY KEY,
+    admin_id VARCHAR(255) PRIMARY KEY,
     FOREIGN KEY (admin_id) REFERENCES user(user_id)
 );
 
 CREATE TABLE faculty (
-    fac_id INT PRIMARY KEY,
+    fac_id VARCHAR(255) PRIMARY KEY,
     FOREIGN KEY (fac_id) REFERENCES user(user_id)
 );
 
 CREATE TABLE student (
-    stud_id INT PRIMARY KEY,
+    stud_id VARCHAR(255) PRIMARY KEY,
     FOREIGN KEY (stud_id) REFERENCES user(user_id)
 );
 
 CREATE TABLE teaching_assistant (
-    ta_id INT PRIMARY KEY,
-    course_id INT,
+    ta_id VARCHAR(255) PRIMARY KEY,
+    course_id VARCHAR(255),
     FOREIGN KEY (ta_id) REFERENCES user(user_id),
     FOREIGN KEY (course_id) REFERENCES course(course_id)
 );
 
 CREATE TABLE course (
-    course_id INT PRIMARY KEY AUTO_INCREMENT,
+    course_id  VARCHAR(255) PRIMARY KEY,
     title VARCHAR(255) NOT NULL,
     start_date DATE NOT NULL,
     end_date DATE NOT NULL,
-    admin_id INT NOT NULL,
-    fac_id INT NOT NULL,
+    admin_id VARCHAR(255) NOT NULL,
+    fac_id VARCHAR(255) NOT NULL,
     textbook_id INT NOT NULL,
     FOREIGN KEY (admin_id) REFERENCES admin(admin_id),
     FOREIGN KEY (fac_id) REFERENCES faculty(fac_id),
@@ -52,20 +52,19 @@ CREATE TABLE course (
 );
 
 CREATE TABLE active_course (
-    token CHAR(7) PRIMARY KEY,
+    token CHAR(6) PRIMARY KEY,
     capacity INT NOT NULL,
-    course_id INT NOT NULL, 
+    course_id VARCHAR(255) NOT NULL,
     FOREIGN KEY (course_id) REFERENCES course(course_id)
 );
 
 CREATE TABLE enroll (
     is_approved BOOLEAN NOT NULL,
-    is_waiting BOOLEAN NOT NULL,
-    stud_id INT,
-    token CHAR(7), 
-    FOREIGN KEY (token) REFERENCES active_course(token),
+    stud_id VARCHAR(255),
+    course_id VARCHAR(255), 
+    FOREIGN KEY (course_id) REFERENCES course(course_id),
     FOREIGN KEY (stud_id) REFERENCES student(stud_id),
-    PRIMARY KEY (stud_id, token)
+    PRIMARY KEY (stud_id, course_id)
 );
 
 CREATE TABLE chapter (
@@ -74,8 +73,8 @@ CREATE TABLE chapter (
     chapter_number VARCHAR(255) NOT NULL,
     title VARCHAR(255) NOT NULL,
     is_hidden BOOLEAN NOT NULL,
-    created_by INT NOT NULL,
-    updated_by INT NOT NULL,
+    created_by VARCHAR(255) NOT NULL,
+    updated_by VARCHAR(255) NOT NULL,
     FOREIGN KEY (textbook_id) REFERENCES textbook(textbook_id),
     FOREIGN KEY (created_by) REFERENCES user(user_id), 
     FOREIGN KEY (updated_by) REFERENCES user(user_id)
@@ -87,8 +86,8 @@ CREATE TABLE section (
     section_no VARCHAR(255) NOT NULL,
     title VARCHAR(255) NOT NULL,
     is_hidden BOOLEAN NOT NULL,
-    created_by INT NOT NULL,
-    updated_by INT NOT NULL,
+    created_by VARCHAR(255) NOT NULL,
+    updated_by VARCHAR(255) NOT NULL,
     FOREIGN KEY (chapter_id) REFERENCES chapter(chapter_id),
     FOREIGN KEY (created_by) REFERENCES user(user_id), 
     FOREIGN KEY (updated_by) REFERENCES user(user_id)
@@ -100,8 +99,8 @@ CREATE TABLE content_block (
     section_id INT,
     block_no VARCHAR(255) NOT NULL,
     is_hidden BOOLEAN NOT NULL,
-    created_by INT NOT NULL,
-    updated_by INT NOT NULL,
+    created_by VARCHAR(255) NOT NULL,
+    updated_by VARCHAR(255) NOT NULL,
     FOREIGN KEY (section_id) REFERENCES section(section_id),
     FOREIGN KEY (created_by) REFERENCES user(user_id), 
     FOREIGN KEY (updated_by) REFERENCES user(user_id)
@@ -126,8 +125,8 @@ CREATE TABLE activity (
     activity_id INT PRIMARY KEY AUTO_INCREMENT,
     section_id INT,
     is_hidden BOOLEAN NOT NULL,
-    created_by INT NOT NULL,
-    updated_by INT NOT NULL,
+    created_by VARCHAR(255) NOT NULL,
+    updated_by VARCHAR(255) NOT NULL,
     FOREIGN KEY (section_id) REFERENCES section(section_id),
     FOREIGN KEY (created_by) REFERENCES user(user_id), 
     FOREIGN KEY (updated_by) REFERENCES user(user_id)
@@ -148,8 +147,8 @@ CREATE TABLE question(
     correct_answer INT NOT NULL,
     activity_id INT NOT NULL, 
     is_hidden BOOLEAN NOT NULL,
-    created_by INT NOT NULL,
-    updated_by INT NOT NULL,
+    created_by VARCHAR(255) NOT NULL,
+    updated_by VARCHAR(255) NOT NULL,
     FOREIGN KEY(activity_id) REFERENCES activity(activity_id),
     FOREIGN KEY (created_by) REFERENCES user(user_id), 
     FOREIGN KEY (updated_by) REFERENCES user(user_id)
@@ -159,14 +158,14 @@ CREATE TABLE question(
 CREATE TABLE notification (
     notif_id INT PRIMARY KEY AUTO_INCREMENT,
     message TEXT NOT NULL,
-    stud_id INT,
+    stud_id VARCHAR(255),
     FOREIGN KEY (stud_id) REFERENCES student(stud_id) 
 );
 
 CREATE TABLE score (
     score INT NOT NULL,
     timestamp DATETIME NOT NULL,
-    stud_id INT,
+    stud_id VARCHAR(255),
     activity_id INT,
     PRIMARY KEY (stud_id, activity_id),
     FOREIGN KEY (stud_id) REFERENCES student(stud_id),
