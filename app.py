@@ -9,8 +9,8 @@ try:
         user_types = {
             "Admin" : 1,
             "Faculty" : 2,
-            "TA" : 3,
-            "Student": 4
+            "Student": 3,
+            "TA" : 4
         }
         username = username_entry.get()
         password = password_entry.get()
@@ -19,6 +19,7 @@ try:
         if username and password and user_type:
             #Invoke user based login here
             command = f"SELECT password FROM user WHERE user_id = '{username}'"
+            print(command)
             cursor.execute(command)
             pwd_list = cursor.fetchall()
             print(f"Query Result:{pwd_list}")
@@ -55,7 +56,7 @@ try:
     user_type_var = tk.StringVar(root)
     user_type_var.set("Admin")
 
-    user_type_dropdown = tk.OptionMenu(root, user_type_var, "Admin", "Teacher", "TA", "Student")
+    user_type_dropdown = tk.OptionMenu(root, user_type_var, "Admin", "Faculty", "Student", "TA")
     user_type_dropdown.grid(row=2, column=1, padx=10, pady=10)
 
     submit_button = tk.Button(root, text="Login", command=login)

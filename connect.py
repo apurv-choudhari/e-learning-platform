@@ -42,6 +42,7 @@ def setupDB():
         else:
             print("Database Population Failed.")
 
+        reservationConnection.commit()
     except mysql.connector.Error as err:
         if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
             print('Invalid credentials')

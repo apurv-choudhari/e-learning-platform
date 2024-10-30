@@ -7,10 +7,8 @@ def executeSQLQueries(cursor, file):
             sql_script = file.read()
             sql_commands = sql_script.split(';')
             for command in sql_commands:
-                # print(command)
                 command = command.strip()
-                if command:
-                    cursor.execute(command)
+                cursor.execute(command)
     except Error as e:
         print(f"An error occurred: {e}")
         return False
@@ -20,7 +18,7 @@ def createDB(cursor):
     return executeSQLQueries(cursor, "setupDB.sql")
 
 def populateDB(cursor):
-    return executeSQLQueries(cursor, "populate_data.sql")
+    return executeSQLQueries(cursor, "faculty_ta_populate_data.sql")
 
 def clearAll(cursor):
     try:
