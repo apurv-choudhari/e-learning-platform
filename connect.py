@@ -61,10 +61,10 @@ def main():
 
     if args.choice == 'app':
         print(f'Starting ZyBooks.')
-        subprocess.run(["python3", "app.py"])
+        subprocess.run(["python", "app.py"])
     elif args.choice == 'queries':
         print("Execute Sample Queries.")
-        subprocess.run(["python3", "execute_sample_queries.py"])
+        subprocess.run(["python", "execute_sample_queries.py"])
 
 
 if __name__ == "__main__":
