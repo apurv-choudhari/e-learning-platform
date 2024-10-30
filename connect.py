@@ -12,17 +12,22 @@ password=os.getenv('DBMS_PASS')
 host='classdb2.csc.ncsu.edu'
 database=os.getenv('DBMS_USER')
 print(f"User:{user}, Password:{password}, Host:{host}, Database:{database}")
+# cursor = None
+
+def connectDB():
+    print(os.getenv('DBMS_USER'))
+    reservationConnection = mysql.connector.connect(
+        user=user,
+        password=password,
+        host=host,
+        database=database)
+    print("Connect Successful.\n")
+    cursor = reservationConnection.cursor()
+    return reservationConnection, cursor
 
 def setupDB():
     try:
-        print(os.getenv('DBMS_USER'))
-        reservationConnection = mysql.connector.connect(
-            user=user,
-            password=password,
-            host=host,
-            database=database)
-        print("Connect Successful.\n")
-        cursor = reservationConnection.cursor()
+        reservationConnection, cursor = connectDB()
 
         if mdb.clearAll(cursor):
             print("Database Cleared.")

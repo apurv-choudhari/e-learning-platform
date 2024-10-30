@@ -1,11 +1,14 @@
+import argparse
 import tkinter as tk
 from tkinter import messagebox
+from connect import connectDB
+_, cursor = connectDB()
 
 try:
     def login():
         user_types = {
             "Admin" : 1,
-            "Teacher" : 2,
+            "Faculty" : 2,
             "TA" : 3,
             "Student": 4
         }
@@ -15,7 +18,20 @@ try:
 
         if username and password and user_type:
             #Invoke user based login here
-            messagebox.showinfo("Submission", f"Username: {username}\nPassword: {password}\nUser Type: {user_type}")
+            command = f"SELECT password FROM user WHERE user_id = '{username}'"
+            cursor.execute(command)
+            pwd_list = cursor.fetchall()
+            print(f"Query Result:{pwd_list}")
+            if not pwd_list:
+                messagebox.showinfo("Fail", "Data Not Found.")
+                return
+
+            pwd = pwd_list[0][0]
+            if pwd == password:
+                print("Login Success")
+                messagebox.showinfo("Success", f"Login Success.\nUsername: {username}\nPassword: {password}\nUser Type: {user_type}")
+            else:
+                messagebox.showinfo("Fail","Login Failed.")
         else:
             messagebox.showwarning("Incomplete Data", "Please fill in all fields.")
 
