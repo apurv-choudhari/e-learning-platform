@@ -34,6 +34,7 @@ CREATE TABLE student (
 CREATE TABLE teaching_assistant (
     ta_id VARCHAR(255) PRIMARY KEY,
     course_id VARCHAR(255),
+    fac_id VARCHAR(255),
     FOREIGN KEY (ta_id) REFERENCES user(user_id),
     FOREIGN KEY (course_id) REFERENCES course(course_id)
 );
