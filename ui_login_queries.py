@@ -18,17 +18,19 @@ def login():
     user_type = user_types[user_type_var.get()]
 
     if username and password and user_type:
-        command = f"SELECT password FROM user WHERE user_id = '{username}'"
+        command = f"SELECT password FROM user WHERE user_id = '{username}' AND role_no = '{user_type}'"
         print(command)
         cursor.execute(command)
-        pwd_list = cursor.fetchall()
-        print(f"Query Result: {pwd_list}")
-        if not pwd_list:
-            messagebox.showinfo("Fail", "Data Not Found.")
+        result = cursor.fetchall()
+        print(f"Query Result: {result}")
+
+        if not result:
+            messagebox.showinfo("Fail", "Data Not Found. Please check if the username, password and the role is correct.")
             return
 
-        pwd = pwd_list[0][0]
-        if pwd == password:
+        db_password = result[0][0]
+
+        if db_password == password:
             print("Login Success")
             messagebox.showinfo("Success", f"Login Success.\nUsername: {username}\nPassword: {password}\nUser Type: {user_type}")
         else:
