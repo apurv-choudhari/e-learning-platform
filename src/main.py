@@ -53,29 +53,11 @@ def setupDB():
     else:
         reservationConnection.close()
 
-# import argparse
-
-# def main():
-#     setupDB()
-#     parser = argparse.ArgumentParser()
-#     parser.add_argument(
-#         'choice',
-#         choices=['app', 'queries']
-#     )
-
-#     args = parser.parse_args()
-
-#     if args.choice == 'app':
-#         print(f'Starting ZyBooks.')
-#         subprocess.run(["python", "app.py"])
-#     elif args.choice == 'queries':
-#         print("Execute Sample Queries.")
-#         subprocess.run(["python", "execute_sample_queries.py"])
-
 def main():
     setupDB()
     print("Starting ZyBooks.")
-    subprocess.run(["python", "app.py"])
+    app = os.path.join(os.path.dirname(__file__), 'app.py')
+    subprocess.run(["python", app])
 
 if __name__ == "__main__":
     main()
