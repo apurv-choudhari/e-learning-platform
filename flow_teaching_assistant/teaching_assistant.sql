@@ -1,0 +1,2 @@
+-- FILE FOR PROCEDURES PERTAINING TO TA
+-- Should mostly contain SELECT, UPDATE AND DELETE Queries

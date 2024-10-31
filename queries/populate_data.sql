@@ -1,3 +1,5 @@
+-- TODO: According to the new ER Diagrams, change the INSERT queries
+
 INSERT INTO textbook (textbook_id, title, created_by, updated_by) VALUES 
 (101, 'Database Management Systems', 1, 1),
 (102, 'Fundamentals of Software Engineering', 1, 1),

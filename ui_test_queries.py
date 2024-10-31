@@ -19,5 +19,7 @@ def back_to_login(queries_window, root):
     root.deiconify()
 
 def execute_query(query_num):
+    # TODO
+    # The cursor logic goes here
     result = f"Executing Query {query_num}..."
     messagebox.showinfo("Query Execution", result)
