@@ -2,6 +2,9 @@
 
 This is an E-Learning Platform project built using Python and MySQL designed to manage users and execute queries via a Tkinter-based GUI.
 
+## Note for devs
+Please check the README before starting out. If there's anything in progress or needs to be done, just search `TODO` in the codebase. That section indicates incomplete/in-progress work.
+
 ## Prerequisites
 
 1. **Python Installation**:
@@ -56,10 +59,13 @@ This will launch the main application window where you can log in and access the
 - **`config/`**: Contains scripts for initializing and configuring the database.
 - **`queries/`**: Contains SQL files for database schema creation and data population.
 
-### File Prefixes & Suffixes
+### File/Folders Prefixes & Suffixes
 
 - **Files starting with `ui_`**: These files manage the user interface (UI) aspects of the application, such as the login screen and query execution interface.
 - **Files ending with `populate_data` are sql files for inserting initial values to the database. the string before the prefix represents the data being populated.
+- **Folder starting with `flow_`**: These separate the flows according to roles. These contain two files:
+    - An SQL file for the procedures for the role that comes after the `flow_` prefix.
+    - A `flow.py` file which takes care of the UI and the application logic for that role.
 
 ### Important Files
 
