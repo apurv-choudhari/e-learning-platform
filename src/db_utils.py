@@ -1,9 +1,14 @@
 
 from mysql.connector import Error
 import os
+from pathlib import Path
 
-db_setup_path = os.path.join(os.path.dirname(__file__), '..', 'sql', 'db_setup.sql')
-db_populate_path = os.path.join(os.path.dirname(__file__), '..', 'sql', 'user_populate_data.sql')
+BASE_DIR = Path(__file__).resolve().parent.parent
+print(f"Base Dir:{BASE_DIR}")
+SQL_DIR = BASE_DIR / "sql"
+db_setup_path = SQL_DIR/"db_setup.sql"
+db_populate_path = SQL_DIR/"user_populate_data.sql"
+
 
 def executeSQL(cursor, file):
     try:
@@ -15,6 +20,8 @@ def executeSQL(cursor, file):
                 cursor.execute(command)
     except Error as e:
         print(f"An error occurred: {e}")
+        current_filename = Path(__file__).name
+        print(f"Error executing SQL from {file} in {current_filename}: {e}")
         return False
     return True
 
