@@ -36,8 +36,6 @@ CREATE TABLE student (
 CREATE TABLE teaching_assistant (
     ta_id VARCHAR(255) PRIMARY KEY,
     course_id VARCHAR(255),
-    textbook_id INT NOT NULL,
-    FOREIGN KEY (textbook_id) REFERENCES textbook(textbook_id),
     fac_id VARCHAR(255) NOT NULL,
     FOREIGN KEY (ta_id) REFERENCES user(user_id),
     FOREIGN KEY (course_id) REFERENCES course(course_id),

@@ -1,7 +1,7 @@
 import mysql.connector
 from mysql.connector import errorcode
 from dotenv import load_dotenv
-import manageDB as mdb
+from config import init_db as mdb
 import os
 import subprocess
 
@@ -53,25 +53,29 @@ def setupDB():
     else:
         reservationConnection.close()
 
-import argparse
+# import argparse
+
+# def main():
+#     setupDB()
+#     parser = argparse.ArgumentParser()
+#     parser.add_argument(
+#         'choice',
+#         choices=['app', 'queries']
+#     )
+
+#     args = parser.parse_args()
+
+#     if args.choice == 'app':
+#         print(f'Starting ZyBooks.')
+#         subprocess.run(["python", "app.py"])
+#     elif args.choice == 'queries':
+#         print("Execute Sample Queries.")
+#         subprocess.run(["python", "execute_sample_queries.py"])
 
 def main():
     setupDB()
-    parser = argparse.ArgumentParser()
-    parser.add_argument(
-        'choice',
-        choices=['app', 'queries']
-    )
-
-    args = parser.parse_args()
-
-    if args.choice == 'app':
-        print(f'Starting ZyBooks.')
-        subprocess.run(["python", "app.py"])
-    elif args.choice == 'queries':
-        print("Execute Sample Queries.")
-        subprocess.run(["python", "execute_sample_queries.py"])
-
+    print("Starting ZyBooks.")
+    subprocess.run(["python", "ui_login_queries.py"])
 
 if __name__ == "__main__":
     main()

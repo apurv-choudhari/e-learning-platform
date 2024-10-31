@@ -1,5 +1,9 @@
 
 from mysql.connector import Error
+import os
+
+db_setup_path = os.path.join(os.path.dirname(__file__), '..', 'queries', 'db_setup.sql')
+db_populate_path = os.path.join(os.path.dirname(__file__), '..', 'queries', 'faculty_ta_populate_data.sql')
 
 def executeSQLQueries(cursor, file):
     try:
@@ -15,10 +19,10 @@ def executeSQLQueries(cursor, file):
     return True
 
 def createDB(cursor):
-    return executeSQLQueries(cursor, "setupDB.sql")
+    return executeSQLQueries(cursor, db_setup_path)
 
 def populateDB(cursor):
-    return executeSQLQueries(cursor, "faculty_ta_populate_data.sql")
+    return executeSQLQueries(cursor, db_populate_path)
 
 def clearAll(cursor):
     try:
