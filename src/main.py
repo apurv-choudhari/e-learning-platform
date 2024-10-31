@@ -7,28 +7,37 @@ import subprocess
 
 load_dotenv()
 
-user=os.getenv('DBMS_USER')
-password=os.getenv('DBMS_PASS')
-host='classdb2.csc.ncsu.edu'
-database=os.getenv('DBMS_USER')
-print(f"User:{user}, Password:{password}, Host:{host}, Database:{database}")
-# cursor = None
+user = os.getenv('DBMS_USER')
+password = os.getenv('DBMS_PASS')
+host = 'classdb2.csc.ncsu.edu'
+database = os.getenv('DBMS_USER')
 
 def connectDB():
-    print(os.getenv('DBMS_USER'))
-    reservationConnection = mysql.connector.connect(
-        user=user,
-        password=password,
-        host=host,
-        database=database)
-    print("Connect Successful.\n")
-    cursor = reservationConnection.cursor()
-    return reservationConnection, cursor
+    try:
+        reservationConnection = mysql.connector.connect(
+            user=user,
+            password=password,
+            host=host,
+            database=database
+        )
+        print("Connect Successful.\n")
+        cursor = reservationConnection.cursor()
+        return reservationConnection, cursor
+    except mysql.connector.Error as err:
+        if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
+            print('Invalid credentials')
+        elif err.errno == errorcode.ER_BAD_DB_ERROR:
+            print('Database not found')
+        else:
+            print('Cannot connect to database:', err)
+        return None, None
 
 def setupDB():
-    try:
-        reservationConnection, cursor = connectDB()
+    reservationConnection, cursor = connectDB()
+    if not cursor:
+        return
 
+    try:
         if mdb.clearAll(cursor):
             print("Database Cleared.")
 
@@ -42,15 +51,17 @@ def setupDB():
         else:
             print("Database Population Failed.")
 
+        if mdb.insert_images(cursor):
+            print("Image Insertion Successful.")
+        else:
+            print("Image Insertion Failed.")
+
         reservationConnection.commit()
     except mysql.connector.Error as err:
-        if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
-            print('Invalid credentials')
-        elif err.errno == errorcode.ER_BAD_DB_ERROR:
-            print('Database not found')
-        else:
-            print('Cannot connect to database:',err)
-    else:
+        print('Error:', err)
+        reservationConnection.rollback()
+    finally:
+        cursor.close()
         reservationConnection.close()
 
 def main():
