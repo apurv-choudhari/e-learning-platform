@@ -1,7 +1,7 @@
 import mysql.connector
 from mysql.connector import errorcode
 from dotenv import load_dotenv
-from config import init_db as mdb
+import db_utils as mdb
 import os
 import subprocess
 
@@ -75,7 +75,7 @@ def setupDB():
 def main():
     setupDB()
     print("Starting ZyBooks.")
-    subprocess.run(["python", "ui_login_queries.py"])
+    subprocess.run(["python", "app.py"])
 
 if __name__ == "__main__":
     main()

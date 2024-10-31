@@ -2,8 +2,8 @@
 from mysql.connector import Error
 import os
 
-db_setup_path = os.path.join(os.path.dirname(__file__), '..', 'queries', 'db_setup.sql')
-db_populate_path = os.path.join(os.path.dirname(__file__), '..', 'queries', 'user_populate_data.sql')
+db_setup_path = os.path.join(os.path.dirname(__file__), '..', 'sql', 'db_setup.sql')
+db_populate_path = os.path.join(os.path.dirname(__file__), '..', 'sql', 'user_populate_data.sql')
 
 def executeSQL(cursor, file):
     try:

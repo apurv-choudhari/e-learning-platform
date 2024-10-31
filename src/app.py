@@ -1,11 +1,11 @@
 import tkinter as tk
 from tkinter import messagebox
 from main import connectDB
-from ui_test_queries import open_queries_window
-import flow_admin.flow as admin_flow
-import flow_faculty.flow as faculty_flow
-import flow_teaching_assistant.flow as ta_flow
-import flow_student.flow as student_flow
+from test_queries import open_queries_window
+import os
+import sys
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+from flow import admin_flow, faculty_flow, student_flow, ta_flow
 
 _, cursor = connectDB()
 
@@ -51,7 +51,7 @@ def login():
         messagebox.showwarning("Incomplete Data", "Please fill in all fields.")
 
 root = tk.Tk()
-root.title("User Information")
+root.title("ZyBooks")
 root.geometry("500x400")
 
 # Center-align all elements
@@ -88,7 +88,7 @@ exit_button = tk.Button(button_frame, text="Exit", command=root.quit)
 exit_button.grid(row=0, column=1, padx=10)
 
 # The queries button
-queries_button = tk.Button(root, text="Queries", command=lambda: open_queries_window(root))
+queries_button = tk.Button(root, text=" Test Queries", command=lambda: open_queries_window(root))
 queries_button.grid(row=4, column=0, columnspan=2, pady=20)
 
 root.mainloop()
