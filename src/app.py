@@ -5,7 +5,10 @@ from test_queries import open_queries_window
 import os
 import sys
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-from flow import admin_flow, faculty_flow, student_flow, ta_flow
+from flow.admin import admin_flow
+from flow.faculty import faculty_flow
+from flow.student import student_flow
+from flow.ta import ta_flow
 
 _, cursor = connectDB()
 
