@@ -44,7 +44,7 @@ pip install -r requirements.txt
 
 ## Running the Application
 
-To start the application, run the following command:
+To start the application, change working directory to src and run the following command:
 
 ```bash
 python main.py
