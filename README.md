@@ -54,18 +54,19 @@ This will launch the main application window where you can log in and access the
 
 ## File Structure
 
-### Folder Descriptions
+- **README.md:** The project documentation, explaining the purpose, usage, and structure of the project.
 
-- **`config/`**: Contains scripts for initializing and configuring the database.
-- **`queries/`**: Contains SQL files for database schema creation and data population.
+- **requirements.txt:** Lists all Python packages and dependencies required for the project. Install with pip install -r requirements.txt.
 
-### File/Folders Prefixes & Suffixes
+- **flow/:** Houses role-specific program flows for different user types, including admin, faculty, student, and TA flows. Each file implements workflows and logic tailored to the corresponding user role.
 
-- **Files starting with `ui_`**: These files manage the user interface (UI) aspects of the application, such as the login screen and query execution interface.
-- **Files ending with `populate_data` are sql files for inserting initial values to the database. the string before the prefix represents the data being populated.
-- **Folder starting with `flow_`**: These separate the flows according to roles. These contain two files:
-    - An SQL file for the procedures for the role that comes after the `flow_` prefix.
-    - A `flow.py` file which takes care of the UI and the application logic for that role.
+- **sql/:** This directory holds SQL scripts for managing the database:
+  - db_setup.sql and populate_data.sql are for initial database schema creation and data population. Other SQL files define procedures and role-specific SQL commands for each type of user (e.g., admin.sql, faculty.sql).
+
+- **src/:** Contains the main Python source files, including:
+  - app.py: Main application entry script, which orchestrates other modules.
+  - main.py: Core functions and high-level program logic.
+  - db_utils.py: Helper functions for database operations, such as table creation, data population, and deletion.
 
 ### Important Files
 
