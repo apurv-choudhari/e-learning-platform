@@ -1,4 +1,4 @@
-from main import connectDB
+from db_utils import connectDB
 
 def validate_credentials(user_id, password, role):
     """
