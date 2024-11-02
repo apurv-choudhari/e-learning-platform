@@ -76,8 +76,6 @@ def main_menu():
                     student_flow.student_flow()
             elif op == "3":
                 continue
-                
-            student_flow.student_flow()
         elif choice == '4':
             if signin(int(choice)) == True:
                 ta_flow.ta_flow()
