@@ -13,8 +13,8 @@ cursor = None
 role_mapping = {
     1:"Admin",
     2:"Faculty",
-    3:"TA",
-    4:"Student"
+    3:"Student",
+    4:"TA"
 }
 
 def signin(role):
@@ -45,8 +45,8 @@ def main_menu():
         print("\nMain Menu:")
         print("1. Admin Login")
         print("2. Faculty Login")
-        print("3. TA Login")
-        print("4. Student Login")
+        print("3. Student Login")
+        print("4. TA Login")
         print("5. Exit")
         choice = input("Enter Choice (1-5): ")
         
@@ -63,9 +63,9 @@ def main_menu():
             elif choice == '2':
                 faculty_flow.faculty_flow()
             elif choice == '3':
-                ta_flow.ta_flow()
-            elif choice == '4':
                 student_flow.student_flow()
+            elif choice == '4':
+                ta_flow.ta_flow()
 
 if __name__ == "__main__":
     _, cursor = connectDB()

@@ -23,6 +23,7 @@ VALUES
 ('FiWi1024', 'fw23@example.edu', 'Finn', 'Wilder', 'f13mas', 3),
 ('LeMe1024', 'lm56@example.edu', 'Leona', 'Mercer', 'ca32', 3),
 -- TA
+('test', 'test@gmail.com', 'TestTA', 'TestTA', 'test', 4),
 ('JaWi1024', 'jwilliams@ncsu.edu', 'James', 'Williams', 'jwilliams@1234', 4),
 ('LiAl0924', 'lalberti@ncsu.edu', 'Lisa', 'Alberti', 'lalberti&5678@', 4),
 ('DaJo1024', 'djohnson@ncsu.edu', 'David', 'Johnson', 'djohnson%@1122', 4),
