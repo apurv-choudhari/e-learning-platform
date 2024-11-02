@@ -1,6 +1,6 @@
 # E-Learning Platform
 
-This is an E-Learning Platform project built using Python and MySQL designed to manage users and execute queries via a Tkinter-based GUI.
+This is an E-Learning Platform project built using Python and MySQL designed to manage users and execute queries.
 
 ## Note for devs
 Please check the README before starting out. If there's anything in progress or needs to be done, just search `TODO` in the codebase. That section indicates incomplete/in-progress work.
@@ -71,24 +71,6 @@ This will launch the main application window where you can log in and access the
 ### Important Files
 
 - **`main.py`**: The entry point to the application. Running this file starts the main application interface.
-
-## Troubleshooting
-
-### `tkinter` Missing
-If you encounter an error related to `tkinter` missing, install it as follows:
-
-- **Linux (Debian/Ubuntu)**:
-  ```bash
-  sudo apt install python3-tk
-  ```
-
-- **Linux (Red Hat-based)**:
-  ```bash
-  sudo yum install python3-tkinter
-  ```
-
-- **macOS and Windows**: `tkinter` usually comes pre-installed with Python. Ensure you downloaded Python from [python.org](https://www.python.org/downloads/).
-
 
 ## License
 

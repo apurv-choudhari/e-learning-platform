@@ -150,8 +150,6 @@ VALUES
     (102, 'chap02', 'Sec01', 'Block01', 1, 'The Software Development Life Cycle (SDLC) consists of key phases including requirements gathering, design, development, testing, deployment, and maintenance. Each phase plays a crucial role in ensuring that software is built systematically, with feedback and revisions incorporated at each step to deliver a high-quality product.'),
     (103, 'chap01', 'Sec01', 'Block01', 1, 'Machine learning is a subset of artificial intelligence that enables systems to learn from data, identify patterns, and make decisions with minimal human intervention. By training algorithms on vast datasets, machine learning models can improve their accuracy over time, driving advancements in fields like healthcare, finance, and autonomous systems.');
 
--- TODO
--- WRITE INSERT IMAGE query
 INSERT INTO image (textbook_id, chapter_id, section_id, block_id, image_id, image_content, alt_text)
 VALUES 
     (101, 'chap02', 'Sec02', 'Block01', 1, 'sample.png', 'Sample image for DBMS examples'),
