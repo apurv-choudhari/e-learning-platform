@@ -2,7 +2,7 @@ from pathlib import Path
 from aifc import Error
 from db_utils import connectDB
 
-def ta_flow(userid):
+def ta_flow(ta_id):
     conn, cursor = connectDB()
     while(True):
         print("\nWelcome to TA Landing Page.")
@@ -13,10 +13,20 @@ def ta_flow(userid):
 
         choice = input("Choose Option: ")
         if choice == '1': #Go to Active Course
-            active_course()
+            active_course(ta_id)
+        elif choice == '2': #Handle View Courses
+            _, cursor = connectDB()
+            get_course = f"SELECT course_id FROM teaching_assistant WHERE ta_id = '{ta_id}'"
+            cursor.execute(get_course)
+            result = cursor.fetchone()
+            if result:
+                print(f"TAID: {ta_id}, CourseID: {result[0]}")
+            else:
+                print("Failed to find course id.")
+                return
         elif choice == '3': #Change Password
             current = input("Enter current password: ")
-            get_pass = f"SELECT password FROM user WHERE user_id = '{userid}' AND role = '4'"
+            get_pass = f"SELECT password FROM user WHERE ta_id = '{ta_id}' AND role = '4'"
             cursor.execute(get_pass)
             result = cursor.fetchone()
             # print(result)
@@ -35,7 +45,7 @@ def ta_flow(userid):
                         continue
                     else:
                         try:
-                            query = f"UPDATE user SET password = '{new_pass}' WHERE user_id = '{userid}'"
+                            query = f"UPDATE user SET password = '{new_pass}' WHERE ta_id = '{ta_id}'"
                             cursor.execute(query)
                             conn.commit()
                             print("Success: Password Changed.")
@@ -53,13 +63,29 @@ def ta_flow(userid):
         elif choice == '4': #Logout
             return
             
-        return
 
 
-def active_course():
-    print("1. View Students.")
-    print("2. Add New Chapter.")
-    print("3. Modify Chapters.")
-    print("4. Go Back.")
+def active_course(ta_id):
+    _, cursor = connectDB()
     
+    while True:
+        course_id = input("Provide Course ID: ")
+        print("1. View Students.")
+        print("2. Add New Chapter.")
+        print("3. Modify Chapters.")
+        print("4. Go Back.")
+        choice = input("Choose Option: ")
+        
+        if choice == "1":
+            get_students = f"SELECT stud_id FROM enroll WHERE course_id = '{course_id}'"
+            cursor.execute(get_students)
+            result = cursor.fetchall()
+            if result:
+                print(result)
+            else:
+                print("Data Not Found.")
+        
+        
+        # elif choice == "4":
+        #     return
     

@@ -5,6 +5,7 @@ VALUES
 -- ADMIN
 ('saitama', 'admin@ncsu.test', 'adminFirst', 'adminLast', 'password@123', 1),
 -- FACULTY
+('testFacultyID', 'fac@gmail.com', 'fac_name', 'fac_surname', 'test', 2),
 ('KeOg1024', 'kogan@ncsu.edu', 'Kemafor', 'Ogan', 'Ko2024!rpc', 2),
 ('JoDo1024', 'john.doe@example.com', 'John', 'Doe', 'Jd2024!abc', 2),
 ('SaMi1024', 'sarah.miller@domain.com', 'Sarah', 'Miller', 'Sm#Secure2024', 2),
@@ -36,6 +37,7 @@ VALUES
 
 INSERT INTO textbook (textbook_id, title, created_by, updated_by)
 VALUES 
+    (777, 'Sample Textbook', 'saitama', 'saitama'),
     (101, 'Database Management Systems', 'saitama', 'saitama'),
     (102, 'Fundamentals of Software Engineering', 'saitama', 'saitama'),
     (103, 'Fundamentals of Machine Learning', 'saitama', 'saitama');
@@ -53,6 +55,7 @@ VALUES
 ('LeMe1024');
 
 INSERT INTO faculty (fac_id) VALUES
+('testFacultyID'),
 ('KeOg1024'),
 ('JoDo1024'),
 ('SaMi1024'),
@@ -62,6 +65,7 @@ INSERT INTO faculty (fac_id) VALUES
 ('JeGi0524');
 
 INSERT INTO course (course_id, textbook_id, title, start_date, end_date, admin_id, fac_id) VALUES
+('testCourseID', 777, "Sample Textbook", '2024-08-15', '2024-12-15', 'saitama', 'testFacultyID'),
 ('NCSUOganCSC440F24', 101, 'CSC440 Database Systems', '2024-08-15', '2024-12-15', 'saitama', 'KeOg1024'),
 ('NCSUOganCSC540F24', 101, 'CSC540 Database Systems', '2024-08-17', '2024-12-15', 'saitama', 'KeOg1024'),
 ('NCSUSaraCSC326F24', 102, 'CSC326 Software Engineering', '2024-08-23', '2024-10-23', 'saitama', 'SaMi1024'),
@@ -92,6 +96,7 @@ INSERT INTO enroll (is_approved, stud_id, course_id) VALUES
 (FALSE, 'FiWi1024', 'NCSUOganCSC540F24');
 
 INSERT INTO teaching_assistant (ta_id, course_id, fac_id) VALUES
+('test', 'testCourseID', 'testFacultyID'),
 ('JaWi1024', 'NCSUOganCSC440F24', 'KeOg1024'),
 ('LiAl0924', 'NCSUOganCSC540F24', 'KeOg1024'),
 ('DaJo1024', 'NCSUSaraCSC326F24', 'SaMi1024'),

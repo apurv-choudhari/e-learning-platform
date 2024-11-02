@@ -1,4 +1,5 @@
 from errno import errorcode
+from aifc import Error
 import mysql.connector
 from pathlib import Path
 import os
