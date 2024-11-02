@@ -128,7 +128,7 @@ CREATE TABLE image (
     section_id VARCHAR(255) NOT NULL,
     block_id VARCHAR(255) NOT NULL,
     image_id INT NOT NULL,
-    image_content MEDIUMBLOB NOT NULL,
+    image_content VARCHAR(255) NOT NULL,
     alt_text VARCHAR(255),
     PRIMARY KEY (textbook_id, chapter_id, section_id, block_id, image_id),
     FOREIGN KEY (textbook_id, chapter_id, section_id, block_id) REFERENCES content_block(textbook_id, chapter_id, section_id, block_id)

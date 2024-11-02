@@ -1,19 +1,18 @@
-import tkinter as tk
+from utils.validate_credentials import login_flow
 
-def open_flow_window(root):
-    root.withdraw()  # Hide the main login window
+def ta_login():
+    while True:
+        print("\nTA Login:")
+        if not login_flow(role = 4):
+            break
+        print("\n1. Option 1")
+        print("2. Go Back")
+        choice = input("Enter Choice (1-2): ")
 
-    flow_window = tk.Toplevel(root)
-    flow_window.geometry("500x400")
-    flow_window.title("TA Flow")
-
-    back_button = tk.Button(flow_window, text="Back", command=lambda: back_to_login(flow_window, root))
-    back_button.pack(pady=10)
-
-    # Centered label displaying flow start message
-    message_label = tk.Label(flow_window, text="This is the start of the TA flow", font=("Arial", 14))
-    message_label.pack(expand=True)
-
-def back_to_login(flow_window, root):
-    flow_window.destroy()  # Close the current flow window
-    root.deiconify()       # Show the main login window again
+        if choice == '1':
+            print("TA Option 1")
+            # TA-specific menu logic here
+        elif choice == '2':
+            break
+        else:
+            print("Invalid choice. Please enter 1 or 2.")

@@ -151,7 +151,12 @@ VALUES
     (103, 'chap01', 'Sec01', 'Block01', 1, 'Machine learning is a subset of artificial intelligence that enables systems to learn from data, identify patterns, and make decisions with minimal human intervention. By training algorithms on vast datasets, machine learning models can improve their accuracy over time, driving advancements in fields like healthcare, finance, and autonomous systems.');
 
 -- TODO
--- WRITE INSERT IMAGE query in python for managing blobs
+-- WRITE INSERT IMAGE query
+INSERT INTO image (textbook_id, chapter_id, section_id, block_id, image_id, image_content, alt_text)
+VALUES 
+    (101, 'chap02', 'Sec02', 'Block01', 1, 'sample.png', 'Sample image for DBMS examples'),
+    (102, 'chap02', 'Sec02', 'Block01', 1, 'sample2.png', 'Sample image for SDLC phases');
+
 
 -- Insert activities
 INSERT INTO activity (textbook_id, chapter_id, section_id, block_id, activity_id, is_hidden, created_by, updated_by)

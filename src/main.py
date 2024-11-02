@@ -20,7 +20,7 @@ def connectDB():
             host=host,
             database=database
         )
-        print("Connect Successful.\n")
+        # print("DB Connect Successful.\n")
         cursor = reservationConnection.cursor()
         return reservationConnection, cursor
     except mysql.connector.Error as err:
@@ -50,11 +50,6 @@ def setupDB():
             print("Database Population Successful.")
         else:
             print("Database Population Failed.")
-
-        if mdb.insert_images(cursor):
-            print("Image Insertion Successful.")
-        else:
-            print("Image Insertion Failed.")
 
         reservationConnection.commit()
     except mysql.connector.Error as err:

@@ -1,19 +1,19 @@
-import tkinter as tk
+from utils.validate_credentials import login_flow
 
-def open_flow_window(root):
-    root.withdraw()
+def faculty_login():
+    while True:
+        print("\nFaculty Login:")
+        if not login_flow(role = 3):
+            break
 
-    flow_window = tk.Toplevel(root)
-    flow_window.geometry("500x400")
-    flow_window.title("Faculty Flow")
+        print("\n1. Option 1")
+        print("2. Go Back")
+        choice = input("Enter Choice (1-2): ")
 
-    back_button = tk.Button(flow_window, text="Back", command=lambda: back_to_login(flow_window, root))
-    back_button.pack(pady=10)
-
-    # Centered label displaying flow start message
-    message_label = tk.Label(flow_window, text="This is the start of the Faculty flow", font=("Arial", 14))
-    message_label.pack(expand=True)
-
-def back_to_login(flow_window, root):
-    flow_window.destroy()
-    root.deiconify()
+        if choice == '1':
+            print("Faculty Option 1")
+            # Faculty-specific menu logic here
+        elif choice == '2':
+            break
+        else:
+            print("Invalid choice. Please enter 1 or 2.")
