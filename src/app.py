@@ -7,6 +7,7 @@ from flow.admin import admin_flow
 from flow.faculty import faculty_flow
 from flow.student import student_flow
 from flow.ta import ta_flow
+from utils.validate_credentials import login_flow
 
 cursor = None
 
@@ -16,29 +17,6 @@ role_mapping = {
     3:"Student",
     4:"TA"
 }
-
-def signin(role):
-    
-    while(True):
-        userid = input("User ID: ")
-        password = input("Password: ")
-        print(f"\n {role_mapping[role]} Please Select Option: ")
-        print("1. Sign-In")
-        print("2. Go Back")
-
-        choice = input("Enter Choice (1,2): ")
-        if choice == '2':
-            return userid, False
-        elif choice == '1':
-            query = f"SELECT password FROM user WHERE user_id = '{userid}' AND role_no = '{role}'"
-            cursor.execute(query)
-            result = cursor.fetchone()
-            # print(result)
-            if result and password == result[0]:
-                print("Login Successful")
-                return userid, True
-            
-            print("Login Failed. Try Again.\n")
 
 def main_menu():
     print("Welcome to ZyBooks Terminal Application")
@@ -51,20 +29,19 @@ def main_menu():
         print("5. Exit")
         choice = input("Enter Choice (1-5): ")
         
-        if int(choice) not in range(1,6):
+        if choice not in {'1', '2', '3', '4', '5'}:
             print("Invalid choice. Please enter a number between 1 and 5.")
 
         if choice == '5':
             print("Exiting the application.")
             sys.exit()
-
+        user_id = input("User ID: ")
+        password = input("Password: ")
         if choice == '1':
-            userid, status = signin(int(choice))
-            if status == True:
-                admin_flow.admin_flow()
+            if login_flow(choice):
+                admin_flow.admin_flow(choice, user_id, password)
         elif choice == '2':
-            userid, status = signin(int(choice))
-            if status == True:
+            if login_flow(choice, user_id, password):
                 faculty_flow.faculty_flow()
         elif choice == '3':
             print("1. Enroll In a Course.")
@@ -74,15 +51,13 @@ def main_menu():
             if op == "1":
                 print("Handle Enrollemnt Request")
             elif op == "2":
-                userid, status = signin(int(choice))
-                if status == True:
+               if login_flow(choice, user_id, password):
                     student_flow.student_flow()
             elif op == "3":
                 continue
         elif choice == '4':
-            userid, status = signin(int(choice))
-            if status == True:
-                ta_flow.ta_flow(userid)
+            if login_flow(choice, user_id, password):
+                ta_flow.ta_flow(user_id)
 
 if __name__ == "__main__":
     _, cursor = connectDB()
