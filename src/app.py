@@ -20,7 +20,9 @@ role_mapping = {
 def signin(role):
     
     while(True):
-        print(f"\nMenu({role_mapping[role]})")
+        userid = input("User ID: ")
+        password = input("Password: ")
+        print(f"\n {role_mapping[role]} Please Select Option: ")
         print("1. Sign-In")
         print("2. Go Back")
 
@@ -28,8 +30,6 @@ def signin(role):
         if choice == '2':
             return False
         elif choice == '1':
-            userid = input("User ID: ")
-            password = input("Password: ")
             query = f"SELECT password FROM user WHERE user_id = '{userid}' AND role_no = '{role}'"
             cursor.execute(query)
             result = cursor.fetchone()
