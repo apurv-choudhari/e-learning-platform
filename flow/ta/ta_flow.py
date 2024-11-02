@@ -18,7 +18,14 @@ def ta_flow():
             print("2. Go Back")
             op = input("Choose Option: ")
             if op == "1":
-                print("update")
+                while(True):
+                    new = input("Enter New Password: ")
+                    confirm = input("Confirm New Password: ")
+                    if new != confirm:
+                        print("Failed to confirm new password.")
+                        continue
+                    # else:
+                        
             elif op == "2":
                 continue
 

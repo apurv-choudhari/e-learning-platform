@@ -37,6 +37,7 @@ def signin(role):
             if result and password == result[0]:
                 print("Login Successful")
                 return True
+            
             print("Login Failed. Try Again.\n")
 
 def main_menu():
@@ -57,14 +58,28 @@ def main_menu():
             print("Exiting the application.")
             sys.exit()
 
-        if signin(int(choice)) == True:
-            if choice == '1':
+        if choice == '1':
+            if signin(int(choice)) == True:
                 admin_flow.admin_flow()
-            elif choice == '2':
+        elif choice == '2':
+            if signin(int(choice)) == True:
                 faculty_flow.faculty_flow()
-            elif choice == '3':
-                student_flow.student_flow()
-            elif choice == '4':
+        elif choice == '3':
+            print("1. Enroll In a Course.")
+            print("2. Sign-In")
+            print("3. Go Back")
+            op = input("Choose Option: ")
+            if op == "1":
+                print("Handle Enrollemnt Request")
+            elif op == "2":
+                if signin(int(choice)) == True:
+                    student_flow.student_flow()
+            elif op == "3":
+                continue
+                
+            student_flow.student_flow()
+        elif choice == '4':
+            if signin(int(choice)) == True:
                 ta_flow.ta_flow()
 
 if __name__ == "__main__":
