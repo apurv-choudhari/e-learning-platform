@@ -20,8 +20,10 @@ def validate_credentials(user_id, password, role):
     finally:
         cursor.close()
 
-def login_flow(role, user_id, password):
+def login_flow(role):
     while True:
+        user_id = input("User ID: ")
+        password = input("Password: ")
         print('1. Sign-in')
         print('2. Go Back')
         action_choice = input('Enter Choice (1-2): ')
@@ -29,8 +31,8 @@ def login_flow(role, user_id, password):
         if action_choice == '1':
             if validate_credentials(user_id, password, role):
                 print(f"Login Successful. Welcome, {user_id}!")
-                return True
+                return user_id, True
             else:
                 print("Incorrect credentials. Enter Again")                
         else:
-            return False
+            return '', False

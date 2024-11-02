@@ -35,13 +35,14 @@ def main_menu():
         if choice == '5':
             print("Exiting the application.")
             sys.exit()
-        user_id = input("User ID: ")
-        password = input("Password: ")
+
         if choice == '1':
-            if login_flow(choice):
-                admin_flow.admin_flow(choice, user_id, password)
+            user_id, login_success = login_flow(choice)
+            if login_success:
+                admin_flow.admin_flow(user_id)
         elif choice == '2':
-            if login_flow(choice, user_id, password):
+            user_id, login_success = login_flow(choice)
+            if login_success:
                 faculty_flow.faculty_flow()
         elif choice == '3':
             print("1. Enroll In a Course.")
@@ -51,12 +52,14 @@ def main_menu():
             if op == "1":
                 print("Handle Enrollemnt Request")
             elif op == "2":
-               if login_flow(choice, user_id, password):
+                user_id, login_success = login_flow(choice)
+                if login_success:
                     student_flow.student_flow()
             elif op == "3":
                 continue
         elif choice == '4':
-            if login_flow(choice, user_id, password):
+            user_id, login_success = login_flow(choice)
+            if login_success:
                 ta_flow.ta_flow(user_id)
 
 if __name__ == "__main__":
