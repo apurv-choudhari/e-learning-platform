@@ -28,7 +28,7 @@ def signin(role):
 
         choice = input("Enter Choice (1,2): ")
         if choice == '2':
-            return False
+            return userid, False
         elif choice == '1':
             query = f"SELECT password FROM user WHERE user_id = '{userid}' AND role_no = '{role}'"
             cursor.execute(query)
@@ -36,7 +36,7 @@ def signin(role):
             # print(result)
             if result and password == result[0]:
                 print("Login Successful")
-                return True
+                return userid, True
             
             print("Login Failed. Try Again.\n")
 
@@ -59,10 +59,12 @@ def main_menu():
             sys.exit()
 
         if choice == '1':
-            if signin(int(choice)) == True:
+            userid, status = signin(int(choice))
+            if status == True:
                 admin_flow.admin_flow()
         elif choice == '2':
-            if signin(int(choice)) == True:
+            userid, status = signin(int(choice))
+            if status == True:
                 faculty_flow.faculty_flow()
         elif choice == '3':
             print("1. Enroll In a Course.")
@@ -72,13 +74,15 @@ def main_menu():
             if op == "1":
                 print("Handle Enrollemnt Request")
             elif op == "2":
-                if signin(int(choice)) == True:
+                userid, status = signin(int(choice))
+                if status == True:
                     student_flow.student_flow()
             elif op == "3":
                 continue
         elif choice == '4':
-            if signin(int(choice)) == True:
-                ta_flow.ta_flow()
+            userid, status = signin(int(choice))
+            if status == True:
+                ta_flow.ta_flow(userid)
 
 if __name__ == "__main__":
     _, cursor = connectDB()

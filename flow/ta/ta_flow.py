@@ -1,6 +1,6 @@
 from db_utils import connectDB
 
-def ta_flow():
+def ta_flow(userid):
     cursor = connectDB()
     while(True):
         print("\nWelcome to TA Landing Page.")
@@ -24,7 +24,8 @@ def ta_flow():
                     if new != confirm:
                         print("Failed to confirm new password.")
                         continue
-                    # else:
+                    else:
+                        query = f"UPDATE user SET password = '{new}' WHERE userid = '{userid}'"
                         
             elif op == "2":
                 continue
