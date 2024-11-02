@@ -1,25 +1,31 @@
-import tkinter as tk
-from tkinter import messagebox
+def test_user_queries():
+    while True:
+        print("\n--- Query Executor ---")
+        print("1. Execute Query 1")
+        print("2. Execute Query 2")
+        print("3. Execute Query 3")
+        print("4. Execute Query 4")
+        print("5. Execute Query 5")
+        print("6. Execute Query 6")
+        print("7. Execute Query 7")
+        print("8. Back to Main Menu")
 
-def open_queries_window(root):
-    root.withdraw()
-    queries_window = tk.Toplevel(root)
-    queries_window.title("Query Executor")
-    queries_window.geometry("500x400")
-    
-    back_button = tk.Button(queries_window, text="Back", command=lambda: back_to_login(queries_window, root))
-    back_button.pack(pady=10)
+        choice = input("Enter your choice (1-8): ")
 
-    for i in range(1, 8):
-        button = tk.Button(queries_window, text=f"Execute Query {i}", command=lambda i=i: execute_query(i))
-        button.pack(pady=5)
-
-def back_to_login(queries_window, root):
-    queries_window.destroy()
-    root.deiconify()
+        if choice in [str(i) for i in range(1, 8)]:
+            execute_query(int(choice))
+        elif choice == "8":
+            print("Returning to Main Menu...")
+            break
+        else:
+            print("Invalid choice. Please enter a number between 1 and 8.")
 
 def execute_query(query_num):
-    # TODO
-    # The cursor logic goes here
+    # TODO: Implement the cursor logic here
+    # Simulating query execution
     result = f"Executing Query {query_num}..."
-    messagebox.showinfo("Query Execution", result)
+    print(result)
+
+# Test function
+if __name__ == "__main__":
+    test_user_queries()
