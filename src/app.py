@@ -50,11 +50,11 @@ def main_menu():
             print("3. Go Back")
             op = input("Choose Option: ")
             if op == "1":
-                print("Handle Enrollemnt Request")
+                student_flow.enroll_in_course()
             elif op == "2":
-                user_id, login_success = login_flow(choice)
+                user_id, login_success = login_flow(3)
                 if login_success:
-                    student_flow.student_flow()
+                    student_flow.student_landing_page(user_id)
             elif op == "3":
                 continue
         elif choice == '4':
