@@ -85,7 +85,15 @@ def active_course(ta_id):
             else:
                 print("Data Not Found.")
         
-        
-        # elif choice == "4":
-        #     return
+        elif choice == "2":
+            chapter_id = input("Chapter ID: ")
+            chapter_title = input("Chapter Title: ")
+            ## Add new chapter here.
+            print("1. Add New Section.")
+            print("2. Go Back")
+            op = input("Select Option: ")
+            if op == "1":
+                print()
+            elif op == "2":
+                return
     
