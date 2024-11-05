@@ -114,24 +114,24 @@ VALUES
 INSERT INTO section (textbook_id, chapter_id, section_id, title, is_hidden, created_by, updated_by)
 VALUES 
     -- Sections for textbook 101, chapter 'chap01'
-    (101, 'chap01', 'sec01', 'Introduction and Overview', FALSE, 'saitama', 'saitama'),
-    (101, 'chap01', 'sec02', 'Database System Concepts', FALSE, 'saitama', 'saitama'),
+    (101, 'chap01', 'Sec01', 'Introduction and Overview', FALSE, 'saitama', 'saitama'),
+    (101, 'chap01', 'Sec02', 'Database System Concepts', FALSE, 'saitama', 'saitama'),
 
     -- Sections for textbook 101, chapter 'chap02'
-    (101, 'chap02', 'sec01', 'The Relational Database Structure', FALSE, 'saitama', 'saitama'),
-    (101, 'chap02', 'sec02', 'Integrity Constraints', FALSE, 'saitama', 'saitama'),
+    (101, 'chap02', 'Sec01', 'The Relational Database Structure', FALSE, 'saitama', 'saitama'),
+    (101, 'chap02', 'Sec02', 'Integrity Constraints', FALSE, 'saitama', 'saitama'),
 
     -- Sections for textbook 102, chapter 'chap01'
-    (102, 'chap01', 'sec01', 'Introduction to Software Processes', FALSE, 'saitama', 'saitama'),
-    (102, 'chap01', 'sec02', 'Software Project Planning', FALSE, 'saitama', 'saitama'),
+    (102, 'chap01', 'Sec01', 'Introduction to Software Processes', FALSE, 'saitama', 'saitama'),
+    (102, 'chap01', 'Sec02', 'Software Project Planning', FALSE, 'saitama', 'saitama'),
 
     -- Sections for textbook 102, chapter 'chap02'
-    (102, 'chap02', 'sec01', 'Phases of SDLC', FALSE, 'saitama', 'saitama'),
-    (102, 'chap02', 'sec02', 'SDLC Models', FALSE, 'saitama', 'saitama'),
+    (102, 'chap02', 'Sec01', 'Phases of SDLC', FALSE, 'saitama', 'saitama'),
+    (102, 'chap02', 'Sec02', 'SDLC Models', FALSE, 'saitama', 'saitama'),
 
     -- Sections for textbook 103, chapter 'chap01'
-    (103, 'chap01', 'sec01', 'What is Machine Learning?', FALSE, 'saitama', 'saitama'),
-    (103, 'chap01', 'sec02', 'Supervised vs Unsupervised Learning', FALSE, 'saitama', 'saitama');
+    (103, 'chap01', 'Sec01', 'What is Machine Learning?', FALSE, 'saitama', 'saitama'),
+    (103, 'chap01', 'Sec02', 'Supervised vs Unsupervised Learning', FALSE, 'saitama', 'saitama');
 
 -- Insert content blocks
 INSERT INTO content_block (textbook_id, chapter_id, section_id, block_id, is_type, is_hidden, created_by, updated_by)

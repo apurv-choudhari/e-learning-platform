@@ -1,4 +1,4 @@
-from flow.admin.admin_db_utils import insert_textbook, insert_chapter, insert_section, insert_content_block, insert_text_content, insert_image_content, insert_activity, insert_question, get_next_text_id, get_next_image_id
+from flow.admin.admin_db_utils import insert_textbook, insert_chapter, insert_section, insert_content_block, insert_text_content, insert_image_content, insert_user, insert_activity, insert_question, get_next_text_id, get_next_image_id
 from flow.admin.helpers import validate_integer_input, validate_required_fields
 
 def admin_flow(user_id):
@@ -271,6 +271,11 @@ def add_activity_page(user_id, textbook_id, chapter_id, section_id, block_id):
     activity_id = input("Enter the unique Activity ID: ")
 
     if not validate_required_fields({"Activity ID": activity_id}):
+        return
+    
+    if insert_activity(textbook_id, chapter_id, section_id, block_id, activity_id, user_id):
+        print("Activity added successfully.")
+    else:
         return
 
     while True:
