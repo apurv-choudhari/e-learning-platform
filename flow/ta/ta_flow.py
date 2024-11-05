@@ -1,7 +1,9 @@
 from pathlib import Path
 from aifc import Error
 from db_utils import connectDB
-
+import sys
+sys.path.append('/Users/apurv/NCSU/Fall24_Sem3/DBMS/project/e-learning-platform/flow/admin/')
+import admin_flow
 def ta_flow(ta_id):
     conn, cursor = connectDB()
     while(True):
@@ -86,14 +88,15 @@ def active_course(ta_id):
                 print("Data Not Found.")
         
         elif choice == "2":
-            chapter_id = input("Chapter ID: ")
-            chapter_title = input("Chapter Title: ")
-            ## Add new chapter here.
-            print("1. Add New Section.")
-            print("2. Go Back")
-            op = input("Select Option: ")
-            if op == "1":
-                print()
-            elif op == "2":
-                return
-    
+            get_textbook_it = f"SELECT textbook_id FROM course WHERE course_id = '{course_id}'"
+            cursor.execute(get_textbook_it)
+            result = cursor.fetchone()
+            if result:
+                textbook_id = result[0]
+            
+            admin_flow.create_chapter_page(ta_id,textbook_id)
+        elif choice == "3":
+            modify_chapters()
+            
+def modify_chapters():
+    print("aa")
