@@ -43,7 +43,7 @@ def main_menu():
         elif choice == '2':
             user_id, login_success = login_flow(choice)
             if login_success:
-                faculty_flow.faculty_flow()
+                faculty_flow.faculty_flow(user_id)
         elif choice == '3':
             print("1. Enroll In a Course.")
             print("2. Sign-In")

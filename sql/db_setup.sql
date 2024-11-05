@@ -77,7 +77,7 @@ CREATE TABLE chapter (
     created_by VARCHAR(255) NOT NULL,
     updated_by VARCHAR(255) NOT NULL,
     PRIMARY KEY (textbook_id, chapter_id),
-    FOREIGN KEY (textbook_id) REFERENCES textbook(textbook_id),
+    FOREIGN KEY (textbook_id) REFERENCES textbook(textbook_id) ON DELETE CASCADE,
     FOREIGN KEY (created_by) REFERENCES user(user_id), 
     FOREIGN KEY (updated_by) REFERENCES user(user_id)
 );
@@ -91,7 +91,7 @@ CREATE TABLE section (
     created_by VARCHAR(255) NOT NULL,
     updated_by VARCHAR(255) NOT NULL,
     PRIMARY KEY (textbook_id, chapter_id, section_id),
-    FOREIGN KEY (textbook_id, chapter_id) REFERENCES chapter(textbook_id, chapter_id),
+    FOREIGN KEY (textbook_id, chapter_id) REFERENCES chapter(textbook_id, chapter_id) ON DELETE CASCADE,
     FOREIGN KEY (created_by) REFERENCES user(user_id),
     FOREIGN KEY (updated_by) REFERENCES user(user_id)
 );
@@ -106,7 +106,7 @@ CREATE TABLE content_block (
     created_by VARCHAR(255) NOT NULL,
     updated_by VARCHAR(255) NOT NULL,
     PRIMARY KEY (textbook_id, chapter_id, section_id, block_id),
-    FOREIGN KEY (textbook_id, chapter_id, section_id) REFERENCES section(textbook_id, chapter_id, section_id),
+    FOREIGN KEY (textbook_id, chapter_id, section_id) REFERENCES section(textbook_id, chapter_id, section_id) ON DELETE CASCADE,
     FOREIGN KEY (created_by) REFERENCES user(user_id), 
     FOREIGN KEY (updated_by) REFERENCES user(user_id)
 );
@@ -119,7 +119,7 @@ CREATE TABLE text (
     text_id INT NOT NULL,
     text_content TEXT NOT NULL,
     PRIMARY KEY (textbook_id, chapter_id, section_id, block_id, text_id),
-    FOREIGN KEY (textbook_id, chapter_id, section_id, block_id) REFERENCES content_block(textbook_id, chapter_id, section_id, block_id)
+    FOREIGN KEY (textbook_id, chapter_id, section_id, block_id) REFERENCES content_block(textbook_id, chapter_id, section_id, block_id) ON DELETE CASCADE
 );
 
 CREATE TABLE image (
@@ -131,7 +131,7 @@ CREATE TABLE image (
     image_content VARCHAR(255) NOT NULL,
     alt_text VARCHAR(255),
     PRIMARY KEY (textbook_id, chapter_id, section_id, block_id, image_id),
-    FOREIGN KEY (textbook_id, chapter_id, section_id, block_id) REFERENCES content_block(textbook_id, chapter_id, section_id, block_id)
+    FOREIGN KEY (textbook_id, chapter_id, section_id, block_id) REFERENCES content_block(textbook_id, chapter_id, section_id, block_id) ON DELETE CASCADE
 );
 
 CREATE TABLE activity (
@@ -144,7 +144,7 @@ CREATE TABLE activity (
     created_by VARCHAR(255) NOT NULL,
     updated_by VARCHAR(255) NOT NULL,
     PRIMARY KEY (textbook_id, chapter_id, section_id, block_id, activity_id),
-    FOREIGN KEY (textbook_id, chapter_id, section_id, block_id) REFERENCES content_block(textbook_id, chapter_id, section_id, block_id),
+    FOREIGN KEY (textbook_id, chapter_id, section_id, block_id) REFERENCES content_block(textbook_id, chapter_id, section_id, block_id) ON DELETE CASCADE,
     FOREIGN KEY (created_by) REFERENCES user(user_id), 
     FOREIGN KEY (updated_by) REFERENCES user(user_id)
 );
@@ -170,7 +170,7 @@ CREATE TABLE question (
     created_by VARCHAR(255) NOT NULL,
     updated_by VARCHAR(255) NOT NULL,
     PRIMARY KEY (textbook_id, chapter_id, section_id, block_id, activity_id, question_id),
-    FOREIGN KEY (textbook_id, chapter_id, section_id, block_id, activity_id) REFERENCES activity(textbook_id, chapter_id, section_id, block_id, activity_id),
+    FOREIGN KEY (textbook_id, chapter_id, section_id, block_id, activity_id) REFERENCES activity(textbook_id, chapter_id, section_id, block_id, activity_id) ON DELETE CASCADE,
     FOREIGN KEY (created_by) REFERENCES user(user_id), 
     FOREIGN KEY (updated_by) REFERENCES user(user_id)
 );
@@ -195,7 +195,7 @@ CREATE TABLE score (
     timestamp DATETIME NOT NULL,
     stud_id VARCHAR(255) NOT NULL,
     PRIMARY KEY (course_id, stud_id, textbook_id, chapter_id, section_id, block_id, activity_id, question_id),
-    FOREIGN KEY (textbook_id, chapter_id, section_id, block_id, activity_id, question_id) REFERENCES question(textbook_id, chapter_id, section_id, block_id, activity_id, question_id),
+    FOREIGN KEY (textbook_id, chapter_id, section_id, block_id, activity_id, question_id) REFERENCES question(textbook_id, chapter_id, section_id, block_id, activity_id, question_id)ON DELETE CASCADE,
     FOREIGN KEY (stud_id) REFERENCES student(stud_id),
     FOREIGN KEY (course_id) REFERENCES course(course_id)
 );
