@@ -1,9 +1,11 @@
 from flow.admin.admin_db_utils import insert_textbook, insert_chapter, insert_section, insert_content_block, insert_text_content, insert_image_content, insert_user, insert_activity, insert_question, get_next_text_id, get_next_image_id
 from flow.admin.helpers import validate_integer_input, validate_required_fields
-
+reset = False
 def admin_flow(user_id):
+    global reset
     print("Admin: Landing Page. Welcome, " + user_id + "!")
     while True:
+        reset = False
         print("\nAdmin Menu:")
         print("1. Create a Faculty Account")
         print("2. Create E-textbook")
@@ -33,6 +35,7 @@ def admin_flow(user_id):
 
 
 def create_faculty_page():
+    global reset
     print("\nAdmin: Create a Faculty Account")
     user_id = input("Enter Username: ")
     first_name = input("Enter First Name: ")
@@ -65,6 +68,7 @@ def create_faculty_page():
                 print("Invalid choice. Please enter 1 or 2.")
 
 def create_textbook_page(user_id):
+    global reset
     print("\nAdmin: Create E-textbook")
     title = input("Enter the title of the new E-textbook: ")
     textbook_id = validate_integer_input("Enter the unique E-textbook ID (integer): ")
@@ -87,6 +91,8 @@ def create_textbook_page(user_id):
         match choice:
             case '1':
                 create_chapter_page(user_id, textbook_id)
+                if(reset == True):
+                    return
             case '2':
                 print("Returning to Admin Landing Page...")
                 return
@@ -94,6 +100,7 @@ def create_textbook_page(user_id):
                 print("Invalid choice. Please enter 1 or 2.")
 
 def create_chapter_page(user_id, textbook_id):
+    global reset
     print("\nAdmin: Add New Chapter")
     chapter_id = input("Enter the unique Chapter ID: ")
     chapter_title = input("Enter the Chapter Title: ")
@@ -115,12 +122,15 @@ def create_chapter_page(user_id, textbook_id):
             match choice:
                 case '1':
                     create_section_page(user_id, textbook_id, chapter_id)
+                    if(reset == True):
+                        return
                 case '2':
                     print("Returning to previous page...")
                     return False
                 case '3':
                     print("Returning to User Landing Page...")
-                    return False
+                    reset = True
+                    return
                 case _:
                     print("Invalid choice. Please enter 1, 2, or 3.")
     else:
@@ -128,6 +138,7 @@ def create_chapter_page(user_id, textbook_id):
         return False
 
 def create_section_page(user_id, textbook_id, chapter_id):
+    global reset
     print(f"\nAdding New Section to Chapter ID: {chapter_id} in Textbook ID: {textbook_id}")
     section_id = input("Enter the unique Section ID: ")
     section_title = input("Enter the Section Title: ")
@@ -149,11 +160,14 @@ def create_section_page(user_id, textbook_id, chapter_id):
             match choice:
                 case '1':
                     create_content_block_page(user_id, textbook_id, chapter_id, section_id)
+                    if(reset == True):
+                        return
                 case '2':
                     print("Returning to previous page...")
                     return
                 case '3':
                     print("Returning to User Landing Page...")
+                    reset = True
                     return
                 case _:
                     print("Invalid choice. Please enter 1, 2, or 3.")
@@ -161,6 +175,7 @@ def create_section_page(user_id, textbook_id, chapter_id):
         print("Failed to add section. Please check the details and try again.")
 
 def create_content_block_page(user_id, textbook_id, chapter_id, section_id):
+    global reset
     print(f"\nAdmin: Add New Content Block to Section ID: {section_id} in Chapter ID: {chapter_id} and Textbook ID: {textbook_id}")
     block_id = input("Enter the unique Content Block ID: ")
     
@@ -178,18 +193,24 @@ def create_content_block_page(user_id, textbook_id, chapter_id, section_id):
         content_type = "text"
         if insert_content_block(textbook_id, chapter_id, section_id, block_id, content_type, user_id):
             add_text_page(user_id, textbook_id, chapter_id, section_id, block_id)
+            if(reset == True):
+                return
         else:
             print("Failed to add content block.")
     elif choice == '2':
         content_type = "image"
         if insert_content_block(textbook_id, chapter_id, section_id, block_id, content_type, user_id):
             add_image_page(user_id, textbook_id, chapter_id, section_id, block_id)
+            if(reset == True):
+                return
         else:
             print("Failed to add content block.")
     elif choice == '3':
         content_type = "activity"
         if insert_content_block(textbook_id, chapter_id, section_id, block_id, content_type, user_id):
             add_activity_page(user_id, textbook_id, chapter_id, section_id, block_id)
+            if(reset == True):
+                return
         else:
             print("Failed to add content block.")
     elif choice == '4':
@@ -197,12 +218,14 @@ def create_content_block_page(user_id, textbook_id, chapter_id, section_id):
         return
     elif choice == '5':
         print("Returning to User Landing Page...")
+        reset = True
         return
     else:
         print("Invalid choice. Please enter a number between 1 and 5.")
         return
 
 def add_text_page(user_id, textbook_id, chapter_id, section_id, block_id):
+    global reset
     print("\nAdmin: Add Text")
     text_content = input("Enter the Text: ")
 
@@ -229,12 +252,14 @@ def add_text_page(user_id, textbook_id, chapter_id, section_id, block_id):
                 return
             case '3':
                 print("Returning to User Landing Page...")
-                return
+                reset = True
+                return      
             case _:
                 print("Invalid choice. Please enter 1, 2, or 3.")
 
 
 def add_image_page(user_id, textbook_id, chapter_id, section_id, block_id):
+    global reset
     print("\nAdmin: Add Picture")
     image_content = input("Enter the Picture (image URL): ")
     alt_text = input("Enter Alt Text: ")
@@ -262,11 +287,13 @@ def add_image_page(user_id, textbook_id, chapter_id, section_id, block_id):
                 return
             case '3':
                 print("Returning to User Landing Page...")
+                reset = True
                 return
             case _:
                 print("Invalid choice. Please enter 1, 2, or 3.")
 
 def add_activity_page(user_id, textbook_id, chapter_id, section_id, block_id):
+    global reset
     print("\nAdmin: Add Activity")
     activity_id = input("Enter the unique Activity ID: ")
 
@@ -288,25 +315,38 @@ def add_activity_page(user_id, textbook_id, chapter_id, section_id, block_id):
         match choice:
             case '1':
                 add_question_page(user_id, textbook_id, chapter_id, section_id, block_id, activity_id)
+                if(reset == True):
+                    return
             case '2':
                 return
             case '3':
                 print("Returning to User Landing Page...")
+                reset = True
                 return
             case _:
                 print("Invalid choice. Please enter 1, 2, or 3.")
 
 def add_question_page(user_id, textbook_id, chapter_id, section_id, block_id, activity_id):
+    global reset
     print("\nAdmin: Add Question")
     question_id = input("Enter Question ID: ")
     question_text = input("Enter Question Text: ")
 
     options = []
+    correct_count = 0
+
     for i in range(1, 5):
         option_text = input(f"Enter Option {i} Text: ")
         option_explanation = input(f"Enter Option {i} Explanation: ")
         correct = input(f"Is Option {i} Correct? (yes/no): ").strip().lower() == 'yes'
         options.append((option_text, option_explanation, correct))
+
+        if correct:
+            correct_count += 1
+
+    if correct_count != 1:
+        print("Error: There must be exactly one correct answer. Please try again.")
+        return
 
     if not validate_required_fields({
         "Question ID": question_id,
@@ -317,10 +357,6 @@ def add_question_page(user_id, textbook_id, chapter_id, section_id, block_id, ac
         return
 
     correct_answer = next((i + 1 for i, opt in enumerate(options) if opt[2]), None)
-
-    if correct_answer is None:
-        print("Error: At least one option must be marked as correct.")
-        return
 
     if insert_question(textbook_id, chapter_id, section_id, block_id, activity_id, question_id, question_text, options, correct_answer, user_id):
         print("Question added successfully.")

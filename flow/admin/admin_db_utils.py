@@ -133,14 +133,14 @@ def insert_text_content(textbook_id, chapter_id, section_id, block_id, text_id, 
         cursor.close()
         db_connection.close()
 
-def insert_image_content(textbook_id, chapter_id, section_id, block_id, image_content, alt_text):
+def insert_image_content(textbook_id, chapter_id, section_id, block_id, image_id, image_content, alt_text):
     db_connection, cursor = connectDB()
     
     try:
         cursor.execute("""
-            INSERT INTO image (textbook_id, chapter_id, section_id, block_id, image_content, alt_text)
-            VALUES (%s, %s, %s, %s, %s, %s)
-        """, (textbook_id, chapter_id, section_id, block_id, image_content, alt_text))
+            INSERT INTO image (textbook_id, chapter_id, section_id, block_id, image_id, image_content, alt_text)
+            VALUES (%s, %s, %s, %s, %s, %s, %s)
+        """, (textbook_id, chapter_id, section_id, block_id, image_id, image_content, alt_text))
         
         db_connection.commit()
         return True
@@ -224,8 +224,3 @@ def get_next_image_id(textbook_id, chapter_id, section_id, block_id):
     finally:
         cursor.close()
         db_connection.close()
-
-# TODO
-# Test Insert text, image and activity + question
-# Improve the input for selecting correct answer while creating the question
-#  Should we auto generate IDs for sequential data?
