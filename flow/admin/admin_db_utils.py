@@ -224,3 +224,51 @@ def get_next_image_id(textbook_id, chapter_id, section_id, block_id):
     finally:
         cursor.close()
         db_connection.close()
+
+def insert_active_course(course_id, course_name, textbook_id, faculty_id, start_date, end_date, unique_token, capacity, user_id):
+    db_connection, cursor = connectDB()
+
+    try:
+        cursor.execute("""
+            INSERT INTO course (course_id, textbook_id, title, start_date, end_date, admin_id, fac_id)
+            VALUES (%s, %s, %s, %s, %s, %s, %s)
+        """, (course_id, textbook_id, course_name, start_date, end_date, user_id, faculty_id))
+
+        cursor.execute("""
+            INSERT INTO active_course (token, capacity, course_id)
+            VALUES (%s, %s, %s)
+        """, (unique_token, capacity, course_id))
+
+        db_connection.commit()
+        return True
+    except Exception as e:
+        db_connection.rollback()
+        print("Error creating active course:", e)
+        return False
+    finally:
+        cursor.close()
+        db_connection.close()
+
+def get_faculty_list():
+    db_connection, cursor = connectDB()
+    try:
+        cursor.execute("""
+            SELECT user.user_id, user.first_name, user.last_name, user.email
+            FROM user
+            INNER JOIN faculty ON user.user_id = faculty.fac_id
+        """)
+        faculty_list = cursor.fetchall()
+        return faculty_list
+    finally:
+        cursor.close()
+        db_connection.close()
+
+def get_textbook_list():
+    db_connection, cursor = connectDB()
+    try:
+        cursor.execute("SELECT textbook_id, title FROM textbook")
+        textbook_list = cursor.fetchall()
+        return textbook_list
+    finally:
+        cursor.close()
+        db_connection.close()

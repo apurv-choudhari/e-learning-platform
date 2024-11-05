@@ -1,5 +1,5 @@
-from flow.admin.admin_db_utils import insert_textbook, insert_chapter, insert_section, insert_content_block, insert_text_content, insert_image_content, insert_user, insert_activity, insert_question, get_next_text_id, get_next_image_id
-from flow.admin.helpers import validate_integer_input, validate_required_fields
+from flow.admin.admin_db_utils import insert_textbook, insert_chapter, insert_section, insert_content_block, insert_text_content, insert_image_content, insert_user, insert_activity, insert_question,insert_active_course, get_next_text_id, get_next_image_id, get_faculty_list, get_textbook_list
+from flow.admin.helpers import validate_integer_input, validate_required_fields, validate_faculty_id, validate_textbook_id
 reset = False
 def admin_flow(user_id):
     global reset
@@ -24,7 +24,7 @@ def admin_flow(user_id):
             case '3':
                 print("\nRedirecting to Modify E-textbooks page...")
             case '4':
-                print("\nRedirecting to Create New Active Course page...")
+                create_active_course_page(user_id)
             case '5':
                 print("\nRedirecting to Create New Evaluation Course page...")
             case '6':
@@ -362,3 +362,64 @@ def add_question_page(user_id, textbook_id, chapter_id, section_id, block_id, ac
         print("Question added successfully.")
     else:
         print("Failed to add question. Please try again.")
+
+
+def create_active_course_page(user_id):
+    global reset
+    print("\nAdmin: Create New Active Course")
+
+    faculty_list = get_faculty_list()
+    textbook_list = get_textbook_list()
+    
+    course_id = input("\nEnter Unique Course ID: ")
+    course_name = input("Enter Course Name: ")
+    print("\nList of Available Textbooks:")
+    for textbook in textbook_list:
+        print(f"ID: {textbook[0]}, Title: {textbook[1]}")
+        
+    while True:
+        textbook_id = validate_integer_input("Enter Unique ID of the E-textbook: ")
+        if validate_textbook_id(textbook_id, textbook_list):
+            break
+        else:
+            print("Invalid Textbook ID. Please enter a valid ID from the list above.")
+            
+    print("\nList of Faculty Members:")
+    for faculty in faculty_list:
+        print(f"ID: {faculty[0]}, Name: {faculty[1]} {faculty[2]}, Email: {faculty[3]}")
+    while True:
+        faculty_id = input("Enter Faculty Member ID: ")
+        if validate_faculty_id(faculty_id, faculty_list):
+            break
+        else:
+            print("Invalid Faculty ID. Please enter a valid ID from the list above.")
+
+    start_date = input("Enter Course Start Date (YYYY-MM-DD): ")
+    end_date = input("Enter Course End Date (YYYY-MM-DD): ")
+    unique_token = input("Enter Unique Token (6 characters): ")
+    capacity = validate_integer_input("Enter Course Capacity: ")
+
+    while True:
+        print("\nMenu:")
+        print("1. Save")
+        print("2. Cancel")
+        print("3. Landing Page")
+        choice = input("Enter choice (1-3): ")
+
+        match choice:
+            case '1':
+                if insert_active_course(course_id, course_name, textbook_id, faculty_id, start_date, end_date, unique_token, capacity, user_id):
+                    print("New active course created successfully.")
+                    return
+                else:
+                    print("Failed to create active course. Please try again.")
+                    return
+            case '2':
+                print("Cancelling and returning to previous page...")
+                return
+            case '3':
+                print("Returning to User Landing Page...")
+                reset = True
+                return
+            case _:
+                print("Invalid choice. Please enter 1, 2, or 3.")
