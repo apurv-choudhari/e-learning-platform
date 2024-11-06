@@ -77,7 +77,28 @@ def execute_query(query_num, param_list):
                 AND activity_id = 'ACT0' 
                 AND question_id = 'Q2';
             """,
-        7: "SELECT * FROM activity;"
+        7: """
+            SELECT 
+                t.title AS textbook_title,
+                c1.course_id AS active_course_id,
+                c1.fac_id AS active_instructor,
+                c2.course_id AS evaluation_course_id,
+                c2.fac_id AS evaluation_instructor
+            FROM 
+                textbook t
+            JOIN 
+                course c1 ON t.textbook_id = c1.textbook_id
+            JOIN 
+                active_course ac ON c1.course_id = ac.course_id
+            JOIN 
+                course c2 ON t.textbook_id = c2.textbook_id
+            LEFT JOIN 
+                active_course ac2 ON c2.course_id = ac2.course_id
+            WHERE 
+                c1.fac_id <> c2.fac_id
+                AND ac2.course_id IS NULL
+                AND c1.textbook_id = c2.textbook_id;
+        """
     }
 
     try:
@@ -112,7 +133,8 @@ get_query_params = {
      "3": no_params,
     # "4": params_for_query_4,
     "5" : no_params,
-    "6": no_params
+    "6": no_params,
+    "7": no_params
 }
 
 def test_user_queries():

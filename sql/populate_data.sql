@@ -29,7 +29,9 @@ VALUES
 ('LiAl0924', 'lalberti@ncsu.edu', 'Lisa', 'Alberti', 'lalberti&5678@', 4),
 ('DaJo1024', 'djohnson@ncsu.edu', 'David', 'Johnson', 'djohnson%@1122', 4),
 ('ElCl1024', 'eclark@ncsu.edu', 'Ellie', 'Clark', 'eclark^#3654', 4),
-('JeGi0924', 'jgibson@ncsu.edu', 'Jeff', 'Gibson', 'jgibson$#9877', 4);
+('JeGi0924', 'jgibson@ncsu.edu', 'Jeff', 'Gibson', 'jgibson$#9877', 4),
+-- Testing query 7
+('newFacID', 'new.faculty@example.com', 'New', 'Instructor', 'NewPass2024!', 2);
 
 INSERT INTO admin (admin_id)
 VALUES 
@@ -62,7 +64,9 @@ INSERT INTO faculty (fac_id) VALUES
 ('DaBr1024'),
 ('EmDa1024'),
 ('MiWi1024'),
-('JeGi0524');
+('JeGi0524'),
+-- for query 7 testing
+('newFacID');
 
 INSERT INTO course (course_id, textbook_id, title, start_date, end_date, admin_id, fac_id) VALUES
 ('testCourseID', 777, "Sample Textbook", '2024-08-15', '2024-12-15', 'saitama', 'testFacultyID'),
@@ -70,7 +74,9 @@ INSERT INTO course (course_id, textbook_id, title, start_date, end_date, admin_i
 ('NCSUOganCSC540F24', 101, 'CSC540 Database Systems', '2024-08-17', '2024-12-15', 'saitama', 'KeOg1024'),
 ('NCSUSaraCSC326F24', 102, 'CSC326 Software Engineering', '2024-08-23', '2024-10-23', 'saitama', 'SaMi1024'),
 ('NCSUJegiCSC522F24', 103, 'CSC522 Fundamentals of Machine Learning', '2025-08-25', '2025-12-18', 'saitama', 'JoDo1024'),
-('NCSUSaraCSC326F25', 102, 'CSC326 Software Engineering', '2025-08-27', '2025-12-19', 'saitama', 'SaMi1024');
+('NCSUSaraCSC326F25', 102, 'CSC326 Software Engineering', '2025-08-27', '2025-12-19', 'saitama', 'SaMi1024'),
+-- Testing query 7
+('NewCourseID', 102, 'Advanced Database Systems', '2024-10-01', '2024-12-01', 'saitama', 'newFacID');
 
 INSERT INTO active_course (token, capacity, course_id) VALUES
 ('XYJKLM', 60, 'NCSUOganCSC440F24'),
