@@ -81,8 +81,17 @@ def change_password(ta_id):
         return False
 
 def modify_chapters(user_id, role, course_id):
-    if role == "4":  # For TA
+    if role == "1":  # FOr Admin
+        modify_chapters_Admin()
+    elif role == "4":  # For TA
         modify_chapters_TA(user_id, course_id)
+
+
+def modify_chapters_Admin():
+    chapter_id = input("Provide Chapter ID: ")
+    print("1. Add New Section")
+    print("2. Add New Activity")
+    print("3. Go Back")
 
 def modify_chapters_TA(user_id, course_id):
     chapter_id = input("Provide Chapter ID: ")
