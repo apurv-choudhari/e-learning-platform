@@ -332,7 +332,7 @@ def hide_chapter_util(user_id, course_id, chapter_id):
         if result is not None:
             role_no = result[0]
             # Proceed to update if role_no is not 1
-            if role_no != 1:
+            if role_no != 100:
                 cursor.execute("""
                     UPDATE chapter
                     SET is_hidden = %s, updated_by = %s
@@ -449,7 +449,7 @@ def hide_section_util(user_id, course_id, chapter_id, section_id):
         """, (textbook_id, chapter_id, section_id, user_id))
 
         result = cursor.fetchone()
-        if result and result[0] != 1: 
+        if result and result[0] != 100: 
             # Update the section to hide it
             cursor.execute("""
                 UPDATE section
@@ -631,7 +631,7 @@ def hide_content_block_util(user_id, course_id, chapter_id, section_id, block_id
 
         result = cursor.fetchone()
         # If the role_no is not admin (assuming 1 is the admin role)
-        if result and result[0] != 1:
+        if result and result[0] != 100:
             cursor.execute("""
                 UPDATE content_block
                 SET is_hidden = TRUE, updated_by = %s
@@ -707,7 +707,7 @@ def hide_activity_util(user_id, course_id, chapter_id, section_id, block_id, act
 
         result = cursor.fetchone()
         # If the role_no is not admin (assuming 1 is the admin role)
-        if result and result[0] != 1:
+        if result and result[0] != 100:
             # Update the activity to hide it
             cursor.execute("""
                 UPDATE activity

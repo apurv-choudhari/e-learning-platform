@@ -25,7 +25,7 @@ def execute_query(query_num, param_list):
             LEFT JOIN image i ON c.textbook_id = i.textbook_id AND c.chapter_id = i.chapter_id AND c.section_id = i.section_id AND c.block_id = i.block_id
             LEFT JOIN activity a ON c.textbook_id = a.textbook_id AND c.chapter_id = a.chapter_id AND c.section_id = a.section_id AND c.block_id = a.block_id
             WHERE s.textbook_id = 101 AND s.chapter_id = 'chap02'
-            ORDER BY s.section_id, c.block_id;""",
+            ORDER BY s.section_id, c.block_id""",
         6: "SELECT * FROM content_block;",
         7: "SELECT * FROM activity;"
     }
