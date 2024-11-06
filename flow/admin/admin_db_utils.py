@@ -272,3 +272,98 @@ def get_textbook_list():
     finally:
         cursor.close()
         db_connection.close()
+
+def insert_evaluation_course(course_id, course_name, textbook_id, faculty_id, start_date, end_date, user_id):
+    db_connection, cursor = connectDB()
+
+    try:
+        cursor.execute("""
+            INSERT INTO course (course_id, textbook_id, title, start_date, end_date, admin_id, fac_id)
+            VALUES (%s, %s, %s, %s, %s, %s, %s)
+        """, (course_id, textbook_id, course_name, start_date, end_date, user_id, faculty_id))
+
+        db_connection.commit()
+        return True
+    except Exception as e:
+        db_connection.rollback()
+        print("Error creating evaluation course:", e)
+        return False
+    finally:
+        cursor.close()
+        db_connection.close()
+
+def get_chapter_list(textbook_id):
+    db_connection, cursor = connectDB()
+    try:
+        cursor.execute("""
+            SELECT chapter_id, title FROM chapter
+            WHERE textbook_id = %s
+        """, (textbook_id,))
+        chapter_list = cursor.fetchall()
+        return chapter_list
+    finally:
+        cursor.close()
+        db_connection.close()
+
+def get_section_list(textbook_id, chapter_id):
+    db_connection, cursor = connectDB()
+    try:
+        cursor.execute("""
+            SELECT section_id, title FROM section
+            WHERE textbook_id = %s AND chapter_id = %s
+        """, (textbook_id, chapter_id))
+        section_list = cursor.fetchall()
+        return section_list
+    finally:
+        cursor.close()
+        db_connection.close()
+
+def get_content_block_list(textbook_id, chapter_id, section_id):
+    db_connection, cursor = connectDB()
+    try:
+        cursor.execute("""
+            SELECT block_id, is_type FROM content_block
+            WHERE textbook_id = %s AND chapter_id = %s AND section_id = %s
+        """, (textbook_id, chapter_id, section_id))
+        content_block_list = cursor.fetchall()
+        return content_block_list
+    finally:
+        cursor.close()
+        db_connection.close()
+
+
+def delete_existing_content(textbook_id, chapter_id, section_id, block_id, content_type):
+    """
+    Deletes existing content of the specified type (text, image, or activity)
+    from the given content block.
+    """
+    db_connection, cursor = connectDB()
+    try:
+        if content_type == 'text':
+            cursor.execute("""
+                DELETE FROM text
+                WHERE textbook_id = %s AND chapter_id = %s AND section_id = %s AND block_id = %s
+            """, (textbook_id, chapter_id, section_id, block_id))
+        elif content_type == 'image':
+            cursor.execute("""
+                DELETE FROM image
+                WHERE textbook_id = %s AND chapter_id = %s AND section_id = %s AND block_id = %s
+            """, (textbook_id, chapter_id, section_id, block_id))
+        elif content_type == 'activity':
+            cursor.execute("""
+                DELETE FROM activity
+                WHERE textbook_id = %s AND chapter_id = %s AND section_id = %s AND block_id = %s
+            """, (textbook_id, chapter_id, section_id, block_id))
+            cursor.execute("""
+                DELETE FROM question
+                WHERE textbook_id = %s AND chapter_id = %s AND section_id = %s AND block_id = %s
+            """, (textbook_id, chapter_id, section_id, block_id))
+
+        db_connection.commit()
+        print(f"Existing {content_type} content deleted successfully.")
+    except Exception as e:
+        db_connection.rollback()
+        print(f"Error deleting {content_type} content:", e)
+    finally:
+        cursor.close()
+        db_connection.close()
