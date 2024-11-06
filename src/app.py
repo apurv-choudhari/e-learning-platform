@@ -1,4 +1,3 @@
-
 from db_utils import connectDB
 import os
 import sys
@@ -8,6 +7,7 @@ from flow.faculty import faculty_flow
 from flow.student import student_flow
 from flow.ta import ta_flow
 from utils.validate_credentials import login_flow
+from test_queries import test_user_queries
 
 cursor = None
 
@@ -26,13 +26,14 @@ def main_menu():
         print("2. Faculty Login")
         print("3. Student Login")
         print("4. TA Login")
-        print("5. Exit")
+        print("5. Test Queries")
+        print("6. Exit")
         choice = input("Enter Choice (1-5): ")
         
         if choice not in {'1', '2', '3', '4', '5'}:
             print("Invalid choice. Please enter a number between 1 and 5.")
 
-        if choice == '5':
+        if choice == '6':
             print("Exiting the application.")
             sys.exit()
 
@@ -61,6 +62,8 @@ def main_menu():
             user_id, login_success = login_flow(choice)
             if login_success:
                 ta_flow.ta_flow(user_id)
+        elif choice == '5':
+            test_user_queries()
 
 if __name__ == "__main__":
     _, cursor = connectDB()
