@@ -28,7 +28,7 @@ def main_menu():
         print("4. TA Login")
         print("5. Test Queries")
         print("6. Exit")
-        choice = input("Enter Choice (1-5): ")
+        choice = input("Enter Choice (1-6): ")
         
         if choice not in {'1', '2', '3', '4', '5', '6'}:
             print("Invalid choice. Please enter a number between 1 and 6.")
