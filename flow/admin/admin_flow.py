@@ -341,24 +341,25 @@ def add_activity_page(user_id, textbook_id, chapter_id, section_id, block_id):
 def add_question_page(user_id, textbook_id, chapter_id, section_id, block_id, activity_id):
     global reset
     print("\nAdmin: Add Question")
+    
     question_id = input("Enter Question ID: ")
     question_text = input("Enter Question Text: ")
 
     options = []
-    correct_count = 0
-
     for i in range(1, 5):
         option_text = input(f"Enter Option {i} Text: ")
         option_explanation = input(f"Enter Option {i} Explanation: ")
-        correct = input(f"Is Option {i} Correct? (yes/no): ").strip().lower() == 'yes'
-        options.append((option_text, option_explanation, correct))
+        options.append((option_text, option_explanation))
 
-        if correct:
-            correct_count += 1
-
-    if correct_count != 1:
-        print("Error: There must be exactly one correct answer. Please try again.")
-        return
+    while True:
+        try:
+            correct_answer = int(input("Enter the correct answer (1-4): "))
+            if correct_answer not in range(1, 5):
+                print("Invalid input. Please enter a number between 1 and 4.")
+            else:
+                break
+        except ValueError:
+            print("Invalid input. Please enter a number between 1 and 4.")
 
     if not validate_required_fields({
         "Question ID": question_id,
@@ -368,12 +369,30 @@ def add_question_page(user_id, textbook_id, chapter_id, section_id, block_id, ac
     }):
         return
 
-    correct_answer = next((i + 1 for i, opt in enumerate(options) if opt[2]), None)
+    while True:
+        print("\nMenu:")
+        print("1. Save")
+        print("2. Cancel")
+        print("3. Landing Page")
+        choice = input("Enter choice (1-3): ")
 
-    if insert_question(textbook_id, chapter_id, section_id, block_id, activity_id, question_id, question_text, options, correct_answer, user_id):
-        print("Question added successfully.")
-    else:
-        print("Failed to add question. Please try again.")
+        match choice:
+            case '1':
+                if insert_question(textbook_id, chapter_id, section_id, block_id, activity_id, question_id, question_text, options, correct_answer, user_id):
+                    print("Question added successfully.")
+                else:
+                    print("Failed to add question. Please try again.")
+                break
+            case '2':
+                print("Action canceled.")
+                return
+            case '3':
+                print("Returning to User Landing Page...")
+                reset = True
+                return
+            case _:
+                print("Invalid choice. Please enter 1, 2, or 3.")
+
 
 # MODIFY E-TEXTBOOK LOGIC
 def modify_textbook_page(user_id):

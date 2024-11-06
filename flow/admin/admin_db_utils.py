@@ -197,8 +197,6 @@ def insert_question(textbook_id, chapter_id, section_id, block_id, activity_id, 
         cursor.close()
         db_connection.close()
 
-from src.db_utils import connectDB
-
 def get_next_text_id(textbook_id, chapter_id, section_id, block_id):
     db_connection, cursor = connectDB()
     try:
