@@ -58,6 +58,9 @@ def main_menu():
                     student_flow.student_landing_page(user_id)
             elif op == "3":
                 main_menu()
+            else:
+                print("Invalid choice")
+                main_menu()
         elif choice == '4':
             user_id, login_success = login_flow(choice)
             if login_success:

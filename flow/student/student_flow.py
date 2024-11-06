@@ -66,6 +66,9 @@ def enroll_in_course():
             reservationConnection.commit()
             
             print("New user and enrollment request created successfully.")
+            print(f"\nYour account has been created successfully!")
+            print(f"User ID: {user_id}")
+            print(f"Password: {default_password} (please change after logging in)")
 
         while True:
             print("\nMenu:")
@@ -119,7 +122,7 @@ def view_section(user_id):
 
             if textbook:
                 cursor.execute("""
-                    SELECT chapter_id, title AS chapter_title FROM chapter WHERE textbook_id = %s
+                    SELECT chapter_id, title AS chapter_title FROM chapter WHERE textbook_id = %s AND is_hidden = FALSE
                 """, (textbook[1],))
                 chapters = cursor.fetchall()
 
@@ -127,7 +130,7 @@ def view_section(user_id):
                     chapter_id = chapter[0]
                     cursor.execute("""
                         SELECT section_id, title AS section_title FROM section 
-                        WHERE textbook_id = %s AND chapter_id = %s
+                        WHERE textbook_id = %s AND chapter_id = %s AND is_hidden = FALSE
                     """, (textbook[1], chapter_id))
                     sections = cursor.fetchall()
 
@@ -147,8 +150,18 @@ def view_section(user_id):
         chapter_id_input = input("Enter Chapter ID: ")
         section_id_input = input("Enter Section ID: ")
 
-        if (course_id_input, chapter_id_input, section_id_input) not in available_sections:
-            print("Invalid combination of Course ID, Chapter ID, and Section ID. Please try again.")
+        cursor.execute("""
+            SELECT section_id FROM section 
+            WHERE textbook_id = (
+            SELECT textbook_id FROM course WHERE course_id = %s
+            ) AND chapter_id = %s AND section_id = %s AND is_hidden = FALSE
+        """, (course_id_input, chapter_id_input, section_id_input))
+
+# Fetch the result to see if the section exists
+        section_available = cursor.fetchone()
+
+        if not section_available:
+            print("Invalid section or invalid access request. Please try again.")
             return
 
         print("\nMenu:")
@@ -380,103 +393,6 @@ def view_block(user_id, course_id, chapter_id, section_id):
         cursor.close()
         reservationConnection.close()
 
-
-def student_landing_page(user_id):
-    reservationConnection, cursor = connectDB()
-    if not cursor:
-        return
-
-    try:
-        while True:
-            print("\n--- Student Landing Page ---")
-
-            cursor.execute("""SELECT course_id FROM enroll WHERE stud_id = %s AND is_approved = TRUE
-            """, (user_id,))
-            enrolled_courses = cursor.fetchall()
-
-            if not enrolled_courses:
-                print("You are not enrolled in any courses.")
-                return
-
-            for course in enrolled_courses:
-                course_id = course[0]
-
-                cursor.execute("""SELECT textbook.title AS textbook_title 
-                    FROM textbook
-                    JOIN course ON course.textbook_id = textbook.textbook_id
-                    WHERE course.course_id = %s
-                """, (course_id,))
-                textbook = cursor.fetchone()
-
-                if textbook:
-                    textbook_title = textbook[0]
-                    print(f"\nE-book: {textbook_title} (Course ID: {course_id})")
-
-                    cursor.execute("""SELECT chapter_id, title AS chapter_title 
-                        FROM chapter 
-                        WHERE textbook_id = (
-                            SELECT textbook_id FROM course WHERE course_id = %s
-                        ) AND is_hidden = FALSE
-                    """, (course_id,))
-                    chapters = cursor.fetchall()
-
-                    for chapter in chapters:
-                        chapter_id, chapter_title = chapter
-                        print(f"  Chapter: {chapter_title}")
-
-                        cursor.execute("""SELECT section_id, title AS section_title 
-                            FROM section 
-                            WHERE chapter_id = %s AND textbook_id = (
-                                SELECT textbook_id FROM course WHERE course_id = %s
-                            ) AND is_hidden = FALSE
-                        """, (chapter_id, course_id))
-                        sections = cursor.fetchall()
-
-                        for section in sections:
-                            section_id, section_title = section
-                            print(f"    Section: {section_title}")
-
-                            cursor.execute("""SELECT block_id, is_type 
-                                FROM content_block 
-                                WHERE chapter_id = %s AND section_id = %s AND textbook_id = (
-                                    SELECT textbook_id FROM course WHERE course_id = %s
-                                ) AND is_hidden = FALSE
-                            """, (chapter_id, section_id, course_id))
-                            blocks = cursor.fetchall()
-
-                            for block in blocks:
-                                block_id, block_type = block
-                                print(f"      Block: {block_type}")
-
-            print("\nMenu:")
-            print("1. View a Section")
-            print("2. View Participation Activity Points")
-            print("3. Logout")
-            choice = input("Choose option (1-3): ")
-
-            if choice == '1':
-                view_section(user_id)
-            elif choice == '2':
-                results = view_participation_points(user_id)
-                if results:
-                    print("\nParticipation Activity Points:")
-                    for activity in results:
-                        print(f"Activity ID: {activity['activity_id']}, Score: {activity['score']}/{activity['total_points']} points")
-                else:
-                    print("No participation activities found.")
-            elif choice == '3':
-                print("Logging out.")
-                main_menu()
-                break
-            else:
-                print("Invalid choice. Please enter a valid option.")
-
-    except mysql.connector.Error as err:
-        print('Error:', err)
-    finally:
-        cursor.close()
-        reservationConnection.close()
-
 def view_participation_points(student_id):
     reservationConnection, cursor = connectDB()
     if not cursor:
@@ -541,3 +457,105 @@ def view_participation_points(student_id):
         cursor.close()
         reservationConnection.close()
 
+def student_landing_page(user_id):
+    reservationConnection, cursor = connectDB()
+    if not cursor:
+        return
+
+    try:
+        ebook_count = 1  # Initialize a counter for E-books
+        while True:
+            print("\n--- Student Landing Page ---")
+
+            cursor.execute("""SELECT course_id FROM enroll WHERE stud_id = %s AND is_approved = TRUE""", (user_id,))
+            enrolled_courses = cursor.fetchall()
+
+            if not enrolled_courses:
+                print("You are not enrolled in any courses.")
+                return
+
+            for course in enrolled_courses:
+                course_id = course[0]
+
+                cursor.execute("""SELECT textbook.title AS textbook_title 
+                    FROM textbook
+                    JOIN course ON course.textbook_id = textbook.textbook_id
+                    WHERE course.course_id = %s
+                """, (course_id,))
+                textbook = cursor.fetchone()
+
+                if textbook:
+                    textbook_title = textbook[0]
+                    print(f"\nE-book {ebook_count}: {textbook_title} (Course ID: {course_id})")
+                    ebook_count += 1  # Increment for each new E-book
+
+                    cursor.execute("""SELECT chapter_id, title AS chapter_title 
+                        FROM chapter 
+                        WHERE textbook_id = (
+                            SELECT textbook_id FROM course WHERE course_id = %s
+                        ) AND is_hidden = FALSE
+                    """, (course_id,))
+                    chapters = cursor.fetchall()
+
+                    chapter_count = 1  # Counter for chapters
+                    for chapter in chapters:
+                        chapter_id, chapter_title = chapter
+                        print(f"  Chapter {chapter_count}: {chapter_title}")
+                        chapter_count += 1  # Increment for each new chapter
+
+                        cursor.execute("""SELECT section_id, title AS section_title 
+                            FROM section 
+                            WHERE chapter_id = %s AND textbook_id = (
+                                SELECT textbook_id FROM course WHERE course_id = %s
+                            ) AND is_hidden = FALSE
+                        """, (chapter_id, course_id))
+                        sections = cursor.fetchall()
+
+                        section_count = 1  # Counter for sections
+                        for section in sections:
+                            section_id, section_title = section
+                            print(f"    Section {section_count}: {section_title}")
+                            section_count += 1  # Increment for each new section
+
+                            cursor.execute("""SELECT block_id, is_type 
+                                FROM content_block 
+                                WHERE chapter_id = %s AND section_id = %s AND textbook_id = (
+                                    SELECT textbook_id FROM course WHERE course_id = %s
+                                ) AND is_hidden = FALSE
+                            """, (chapter_id, section_id, course_id))
+                            blocks = cursor.fetchall()
+
+                            block_count = 1  # Counter for blocks
+                            for block in blocks:
+                                block_id, block_type = block
+                                print(f"      Block {block_count}: {block_type}")
+                                block_count += 1  # Increment for each new block
+
+            print("\nMenu:")
+            print("1. View a Section")
+            print("2. View Participation Activity Points")
+            print("3. Logout")
+            choice = input("Choose option (1-3): ")
+
+            if choice == '1':
+                view_section(user_id)
+            elif choice == '2':
+                results = view_participation_points(user_id)
+                if results:
+                    print("\nParticipation Activity Points:")
+                    for activity in results:
+                        print(f"Activity ID: {activity['activity_id']}, Score: {activity['score']}/{activity['total_points']} points")
+                else:
+                    print("No participation activities found.")
+            elif choice == '3':
+                print("Logging out.")
+                main_menu()
+                break
+            else:
+                print("Invalid choice. Please enter a valid option.")
+
+    except mysql.connector.Error as err:
+        print('Error:', err)
+    finally:
+        cursor.close()
+        reservationConnection.close()
