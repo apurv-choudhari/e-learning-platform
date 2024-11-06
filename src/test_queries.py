@@ -17,7 +17,14 @@ def execute_query(query_num, param_list):
             JOIN active_course ac ON c.course_id = ac.course_id
             LEFT JOIN enroll e ON c.course_id = e.course_id AND e.is_approved = TRUE
             GROUP BY c.course_id, c.fac_id; """,
-        4: "SELECT * FROM faculty;",
+        4: """SELECT e.course_id, COUNT(e.stud_id) AS waiting_list_count
+            FROM enroll e
+            JOIN course c ON e.course_id = c.course_id
+            WHERE e.is_approved = FALSE
+            GROUP BY e.course_id
+            ORDER BY waiting_list_count DESC
+            LIMIT 1;
+            ;""",
         5: """SELECT s.section_id,s.title AS section_title,c.block_id, c.is_type AS block_type,t.text_content AS text,i.image_content AS image,a.activity_id AS activity_id
             FROM section s
             JOIN content_block c ON s.textbook_id = c.textbook_id AND s.chapter_id = c.chapter_id AND s.section_id = c.section_id
@@ -131,6 +138,7 @@ get_query_params = {
     "1": params_for_query_1,
     # "2": params_for_query_2,
      "3": no_params,
+     "4": no_params,
     # "4": params_for_query_4,
     "5" : no_params,
     "6": no_params,

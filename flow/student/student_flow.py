@@ -157,7 +157,6 @@ def view_section(user_id):
             ) AND chapter_id = %s AND section_id = %s AND is_hidden = FALSE
         """, (course_id_input, chapter_id_input, section_id_input))
 
-# Fetch the result to see if the section exists
         section_available = cursor.fetchone()
 
         if not section_available:
