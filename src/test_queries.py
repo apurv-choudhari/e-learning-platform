@@ -26,7 +26,57 @@ def execute_query(query_num, param_list):
             LEFT JOIN activity a ON c.textbook_id = a.textbook_id AND c.chapter_id = a.chapter_id AND c.section_id = a.section_id AND c.block_id = a.block_id
             WHERE s.textbook_id = 101 AND s.chapter_id = 'chap02'
             ORDER BY s.section_id, c.block_id""",
-        6: "SELECT * FROM content_block;",
+        6: """SELECT 
+                CASE 
+                    WHEN correct_answer != 1 THEN option1 
+                    ELSE NULL 
+                END AS incorrect_answer, 
+                CASE 
+                    WHEN correct_answer != 1 THEN option1_explanation 
+                    ELSE NULL 
+                END AS explanation
+            FROM question
+            WHERE textbook_id = 101 
+                AND chapter_id = 'chap01' 
+                AND section_id = 'Sec02' 
+                AND block_id = 'Block01' 
+                AND activity_id = 'ACT0' 
+                AND question_id = 'Q2'
+            UNION ALL
+            SELECT 
+                CASE 
+                    WHEN correct_answer != 3 THEN option3 
+                    ELSE NULL 
+                END AS incorrect_answer, 
+                CASE 
+                    WHEN correct_answer != 3 THEN option3_explanation 
+                    ELSE NULL 
+                END AS explanation
+            FROM question
+            WHERE textbook_id = 101 
+                AND chapter_id = 'chap01' 
+                AND section_id = 'Sec02' 
+                AND block_id = 'Block01' 
+                AND activity_id = 'ACT0' 
+                AND question_id = 'Q2'
+            UNION ALL
+            SELECT 
+                CASE 
+                    WHEN correct_answer != 4 THEN option4 
+                    ELSE NULL 
+                END AS incorrect_answer, 
+                CASE 
+                    WHEN correct_answer != 4 THEN option4_explanation 
+                    ELSE NULL 
+                END AS explanation
+            FROM question
+            WHERE textbook_id = 101 
+                AND chapter_id = 'chap01' 
+                AND section_id = 'Sec02' 
+                AND block_id = 'Block01' 
+                AND activity_id = 'ACT0' 
+                AND question_id = 'Q2';
+            """,
         7: "SELECT * FROM activity;"
     }
 
@@ -61,7 +111,8 @@ get_query_params = {
     # "2": params_for_query_2,
      "3": no_params,
     # "4": params_for_query_4,
-    "5" : no_params
+    "5" : no_params,
+    "6": no_params
 }
 
 def test_user_queries():
