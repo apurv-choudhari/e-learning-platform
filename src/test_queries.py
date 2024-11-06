@@ -12,9 +12,20 @@ def execute_query(query_num, param_list):
     queries = {
         1: "select count(section_id) from section where chapter_id = 'chap01' and textbook_id = %s;",
         2: "SELECT * FROM textbook;",
-        3: "SELECT * FROM course;",
+        3: """SELECT c.course_id, c.fac_id AS faculty_member, COUNT(e.stud_id) AS total_students
+            FROM course c
+            JOIN active_course ac ON c.course_id = ac.course_id
+            LEFT JOIN enroll e ON c.course_id = e.course_id AND e.is_approved = TRUE
+            GROUP BY c.course_id, c.fac_id; """,
         4: "SELECT * FROM faculty;",
-        5: "SELECT * FROM section;",
+        5: """SELECT s.section_id,s.title AS section_title,c.block_id, c.is_type AS block_type,t.text_content AS text,i.image_content AS image,a.activity_id AS activity_id
+            FROM section s
+            JOIN content_block c ON s.textbook_id = c.textbook_id AND s.chapter_id = c.chapter_id AND s.section_id = c.section_id
+            LEFT JOIN text t ON c.textbook_id = t.textbook_id AND c.chapter_id = t.chapter_id AND c.section_id = t.section_id AND c.block_id = t.block_id
+            LEFT JOIN image i ON c.textbook_id = i.textbook_id AND c.chapter_id = i.chapter_id AND c.section_id = i.section_id AND c.block_id = i.block_id
+            LEFT JOIN activity a ON c.textbook_id = a.textbook_id AND c.chapter_id = a.chapter_id AND c.section_id = a.section_id AND c.block_id = a.block_id
+            WHERE s.textbook_id = 101 AND s.chapter_id = 'chap02'
+            ORDER BY s.section_id, c.block_id;""",
         6: "SELECT * FROM content_block;",
         7: "SELECT * FROM activity;"
     }
@@ -48,20 +59,21 @@ def no_params():
 get_query_params = {
     "1": params_for_query_1,
     # "2": params_for_query_2,
-    # "3": params_for_query_3,
-    # "4": params_for_query_4
+     "3": no_params,
+    # "4": params_for_query_4,
+    "5" : no_params
 }
 
 def test_user_queries():
     while True:
         print("\n--- Query Executor ---")
         print("1. Query 1: Write a query that prints the number of sections of the first chapter of a textbook.")
-        print("2. Execute Query 2")
-        print("3. Execute Query 3")
-        print("4. Execute Query 4")
-        print("5. Execute Query 5")
-        print("6. Execute Query 6")
-        print("7. Execute Query 7")
+        print("2. Execute Query 2: Print the names of faculty and TAs of all courses. For each person print their role next to their names.")
+        print("3. Execute Query 3: For each active course, print the course id, faculty member and total number of students")
+        print("4. Execute Query 4: Find the course which the largest waiting list, print the course id and the total number ofpeople on the list")
+        print("5. Execute Query 5: Print the contents of Chapter 02 of textbook 101 in proper sequence.")
+        print("6. Execute Query 6: For Q2 of Activity0 in Sec02 of Chap01 in textbook 101, print the incorrect answers for that question and their corresponding explanations.")
+        print("7. Execute Query 7: Find any book that is in active status by one instructor but evaluation status by a different instructor.")
         print("8. Back to Main Menu")
 
         choice = input("Enter your choice (1-8): ")
