@@ -74,7 +74,7 @@ def active_course(user_id):
                 modify_chapter(user_id, course_id)
             case '6':
                 print("\nRedirecting to Add TA")
-                add_ta()
+                add_ta(user_id, course_id)
             case '7':
                 return
             case _:
@@ -209,7 +209,7 @@ def view_students(course_id):
                     return
     return
 
-def add_ta():
+def add_ta(fac_user_id, course_id):
     print("\nAdd a Teaching Assistant (TA)")
     user_id = input("Enter Username: ")
     first_name = input("Enter First Name: ")
@@ -234,7 +234,7 @@ def add_ta():
         match choice:
                 case '1':
                     print("Adding to database...")
-                    insert_ta(user_id, first_name, last_name, email)
+                    insert_ta(user_id, first_name, last_name, email, fac_user_id, course_id)
                 case '2':
                     print("\nRedirecting to Previous page")
                     return

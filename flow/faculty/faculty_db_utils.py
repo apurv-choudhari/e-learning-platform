@@ -249,7 +249,7 @@ def select_students(course_id):
         cursor.close()
         db_connection.close()
 
-def insert_ta(user_id, first_name, last_name, email):
+def insert_ta(user_id, first_name, last_name, email, fac_user_id, course_id):
     try:
         db_connection, cursor = connectDB()
 
@@ -262,6 +262,15 @@ def insert_ta(user_id, first_name, last_name, email):
         cursor.execute(insert_query, (user_id, email, first_name, last_name, default_password))
         db_connection.commit()
         print(f"TA {first_name} {last_name} with ID {user_id} inserted successfully.")
+
+        # Insert into teaching_assistant table
+        insert_ta_query = """
+            INSERT INTO teaching_assistant (ta_id, course_id, fac_id)
+            VALUES (%s, %s, %s)"""
+        
+        cursor.execute(insert_ta_query, (user_id, course_id, fac_user_id))
+        db_connection.commit()
+        print(f"TA {user_id} assigned to course {course_id} under faculty {fac_user_id}.")
 
     except Exception as e:
         print(f"An error occurred while inserting TA: {e}")
