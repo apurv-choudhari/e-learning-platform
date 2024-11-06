@@ -131,6 +131,8 @@ def view_courses(user_id):
                 case '1':
                     print("\nRedirecting to Previous page")
                     return
+                case _:
+                    print("Invalid choice. Please enter 1")
     return
 
 def change_password(user_id):
@@ -171,6 +173,8 @@ def view_waitlist(course_id):
                 case '1':
                     print("\nRedirecting to Previous page")
                     return
+                case _:
+                    print("Invalid choice. Please enter 1")
     return
 
 def approve_enrollment(course_id):
@@ -187,6 +191,7 @@ def approve_enrollment(course_id):
                 case '1':
                     print("Saving in database...")
                     update_enrollment_status(course_id, student_id)
+                    return
                 case '2':
                     print("\nRedirecting to Previous page")
                     return
@@ -207,6 +212,8 @@ def view_students(course_id):
                 case '1':
                     print("\nRedirecting to Previous page")
                     return
+                case _:
+                    print("Invalid choice. Please enter 1-3")
     return
 
 def add_ta(fac_user_id, course_id):
@@ -235,6 +242,7 @@ def add_ta(fac_user_id, course_id):
                 case '1':
                     print("Adding to database...")
                     insert_ta(user_id, first_name, last_name, email, fac_user_id, course_id)
+                    return
                 case '2':
                     print("\nRedirecting to Previous page")
                     return
@@ -320,6 +328,7 @@ def hide_chapter(user_id, course_id, chapter_id):
                 case '1':
                     print("Saving changes in database...")
                     hide_chapter_util(user_id, course_id, chapter_id)
+                    return
                 case '2':
                     print("\nRedirecting to Previous page")
                     return
@@ -339,9 +348,8 @@ def delete_chapter(user_id, course_id, chapter_id):
         match choice:
                 case '1':
                     print("Saving in database...")
-                    res = del_chapter(user_id, course_id, chapter_id)
-                    if not res:
-                        return
+                    res = del_chapter(user_id, course_id, chapter_id)                    
+                    return
                 case '2':
                     print("\nRedirecting to Previous page")
                     return
@@ -420,6 +428,7 @@ def hide_section(user_id, course_id, chapter_id, section_id):
                 case '1':
                     print("Saving in database...")
                     hide_section_util(user_id, course_id, chapter_id, section_id)
+                    return
                 case '2':
                     print("\nRedirecting to Previous page")
                     return
@@ -438,6 +447,7 @@ def delete_section(user_id, course_id, chapter_id, section_id):
                 case '1':
                     print("Saving changes in database...")
                     del_section(user_id, course_id, chapter_id, section_id)
+                    return
                 case '2':
                     print("\nRedirecting to Previous page")
                     return
@@ -541,6 +551,7 @@ def hide_content_block(user_id, course_id, chapter_id, section_id, block_id):
                 case '1':
                     print("Saving in database...")
                     hide_content_block_util(user_id, course_id, chapter_id, section_id, block_id)
+                    return
                 case '2':
                     print("\nRedirecting to Previous page")
                     return
@@ -560,6 +571,7 @@ def delete_content_block(user_id, course_id, chapter_id, section_id, block_id):
                 case '1':
                     print("Saving in database...")
                     del_content_block(user_id, course_id, chapter_id, section_id, block_id)
+                    return
                 case '2':
                     print("\nRedirecting to Previous page")
                     return
@@ -638,6 +650,7 @@ def hide_activity(user_id, course_id, chapter_id, section_id, block_id):
                 case '1':
                     print("Saving chages in database...")
                     hide_activity_util(user_id, course_id, chapter_id, section_id, block_id, activity_id)
+                    return
                 case '2':
                     print("\nRedirecting to Previous page")
                     return
@@ -659,6 +672,7 @@ def delete_activity(user_id, course_id, chapter_id, section_id, block_id):
                 case '1':
                     print("Saving changes in database...")
                     del_activity(user_id, course_id, chapter_id, section_id, block_id, activity_id)
+                    return
                 case '2':
                     print("\nRedirecting to Previous page")
                     return
@@ -727,8 +741,10 @@ def add_question(user_id, course_id, chapter_id, section_id, block_id, activity_
             case '1':
                 if insert_question(textbook_id, chapter_id, section_id, block_id, activity_id, question_id, question_text, options, correct_answer, user_id):
                     print("Question added successfully.")
+                    return
                 else:
                     print("Failed to add question. Please try again.")
+                    return
             case '2':
                 return
             case _:
