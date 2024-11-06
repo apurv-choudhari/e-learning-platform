@@ -478,14 +478,12 @@ def student_landing_page(user_id):
         reservationConnection.close()
 
 def view_participation_points(student_id):
-    # Connect to the database
     reservationConnection, cursor = connectDB()
     if not cursor:
         return
-    
+
     try:
-        # Query to get the participation points for a specific student, including all questions in the activity
-        query = """
+        query_student_score = """
             SELECT 
                 sc.course_id, 
                 sc.textbook_id, 
@@ -493,54 +491,39 @@ def view_participation_points(student_id):
                 sc.section_id, 
                 sc.block_id, 
                 sc.activity_id, 
-                COUNT(q.question_id) AS total_questions,  -- Count of questions in each activity
-                SUM(sc.score) AS total_score            -- Total score from the student's answers
-            FROM question q
-            LEFT JOIN score sc ON sc.textbook_id = q.textbook_id 
-                AND sc.chapter_id = q.chapter_id
-                AND sc.section_id = q.section_id
-                AND sc.block_id = q.block_id
-                AND sc.activity_id = q.activity_id
-                AND sc.question_id = q.question_id
-                AND sc.stud_id = %s
-            WHERE q.activity_id IN (
-                SELECT DISTINCT activity_id FROM question WHERE textbook_id = q.textbook_id
-                AND chapter_id = q.chapter_id
-                AND section_id = q.section_id
-            )
+                SUM(CASE WHEN sc.score IS NOT NULL THEN sc.score ELSE 0 END) AS student_score  -- Sum the student's scores
+            FROM score sc
+            WHERE sc.stud_id = %s
             GROUP BY sc.course_id, sc.textbook_id, sc.chapter_id, sc.section_id, sc.block_id, sc.activity_id
-            HAVING sc.course_id IS NOT NULL AND sc.textbook_id IS NOT NULL  -- Exclude invalid records
         """
 
-        # Execute the query with the student_id parameter
-        cursor.execute(query, (student_id,))
-        results = cursor.fetchall()
+        cursor.execute(query_student_score, (student_id,))
+        student_scores = cursor.fetchall()
 
-        if not results:
+        if not student_scores:
             print(f"No participation points found for student {student_id}.")
             return
 
-        # Print the results
         print(f"Participation Points for Student {student_id}:")
-        for row in results:
-            course_id = row[0]
-            textbook_id = row[1]
-            chapter_id = row[2]
-            section_id = row[3]
-            block_id = row[4]
-            activity_id = row[5]
-            total_questions = row[6]
-            total_score = row[7]
+        
+        for row in student_scores:
+            course_id, textbook_id, chapter_id, section_id, block_id, activity_id, student_score = row
 
-            # Calculate total possible score (each question is worth 3 points)
+            query_total_questions = """
+                SELECT COUNT(question_id) AS total_questions
+                FROM question
+                WHERE textbook_id = %s AND chapter_id = %s AND section_id = %s AND block_id = %s AND activity_id = %s
+            """
+            cursor.execute(query_total_questions, (textbook_id, chapter_id, section_id, block_id, activity_id))
+            total_questions = cursor.fetchone()[0]
+
             total_possible_score = total_questions * 3
 
-            # Display course, textbook, chapter, section, activity, and score info
             print(f"\nCourse: {course_id}, Textbook: {textbook_id}, Chapter: {chapter_id}, Section: {section_id}")
             print(f"Activity: {activity_id}")
-            print(f"Score: {total_score} / {total_possible_score}")
+            print(f"Student Score: {student_score}")
+            print(f"Total Possible Score: {total_possible_score}")
 
-        # Ask user if they want to go back to the landing page
         while True:
             print("\nMenu:")
             print("1. Go back")
@@ -548,7 +531,7 @@ def view_participation_points(student_id):
             
             if choice == '1':
                 print("Going back to the landing page.")
-                break  # Exit the loop and return to the landing page
+                break  
             else:
                 print("Invalid choice. Please enter a valid option.")
     
@@ -557,3 +540,4 @@ def view_participation_points(student_id):
     finally:
         cursor.close()
         reservationConnection.close()
+
