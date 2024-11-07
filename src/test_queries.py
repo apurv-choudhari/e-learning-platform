@@ -7,7 +7,6 @@ def execute_query(query_num, param_list):
         print("Database connection failed.")
         return
 
-    # TODO:
     # Write queries here
     queries = {
         1: "SELECT COUNT(section_id) FROM section WHERE chapter_id = 'chap01' AND textbook_id = %s;",

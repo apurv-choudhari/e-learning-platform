@@ -47,7 +47,8 @@ pip install -r requirements.txt
 To start the application, change working directory to src and run the following command:
 
 ```bash
-python main.py
+cd src
+python app.py
 ```
 
 This will launch the main application window where you can log in and access the query execution interface.
