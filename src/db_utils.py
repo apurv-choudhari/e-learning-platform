@@ -1,31 +1,40 @@
 from errno import errorcode
+import sys
 from aifc import Error
 import mysql.connector
 from pathlib import Path
 import os
-from dotenv import load_dotenv
+# from dotenv import load_dotenv
 from mysql.connector import errorcode
 
-load_dotenv()
+# load_dotenv()
 
-BASE_DIR = Path(__file__).resolve().parent.parent
-SQL_DIR = BASE_DIR / "sql"
-IMAGE_DIR = SQL_DIR / "images"
-db_setup_path = SQL_DIR / "db_setup.sql"
-db_populate_path = SQL_DIR / "populate_data.sql"
+def resource_path(relative_path):
+    try:
+        base_path = getattr(sys, '_MEIPASS', os.path.dirname(os.path.abspath(__file__)))
+        if not hasattr(sys, '_MEIPASS'):
+            base_path = os.path.dirname(base_path)
+    except AttributeError:
+        base_path = os.path.dirname(os.path.abspath(__file__))
+    return os.path.join(base_path, relative_path)
 
-user = os.getenv('DBMS_USER')
-password = os.getenv('DBMS_PASS')
+db_setup_path = resource_path("sql/db_setup.sql")
+db_populate_path = resource_path("sql/populate_data.sql")
+
+user = None
+password = None
 host = 'classdb2.csc.ncsu.edu'
-database = os.getenv('DBMS_USER')
 
 def connectDB():
+    print("\nProvide Database Credentials.")
+    user = input("Username: ")
+    password = input("Password: ")
     try:
         reservationConnection = mysql.connector.connect(
             user=user,
             password=password,
             host=host,
-            database=database
+            database=user
         )
         # print("DB Connect Successful.\n")
         cursor = reservationConnection.cursor()
