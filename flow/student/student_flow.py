@@ -3,7 +3,6 @@ from utils.validate_credentials import login_flow
 import mysql.connector
 import datetime
 import random
-from app import main_menu
 
 def generate_unique_user_id(first_name, last_name, cursor):
     while True:
@@ -548,8 +547,7 @@ def student_landing_page(user_id):
                     print("No participation activities found.")
             elif choice == '3':
                 print("Logging out.")
-                main_menu()
-                break
+                return
             else:
                 print("Invalid choice. Please enter a valid option.")
 

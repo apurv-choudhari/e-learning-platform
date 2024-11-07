@@ -97,7 +97,7 @@ def main_menu():
                     if login_success:
                         student_flow.student_landing_page(user_id)
                 elif op == "3":
-                    main_menu()
+                    continue
             elif choice == '4':
                 user_id, login_success = login_flow(choice)
                 if login_success:
