@@ -21,14 +21,14 @@ def resource_path(relative_path):
 db_setup_path = resource_path("sql/db_setup.sql")
 db_populate_path = resource_path("sql/populate_data.sql")
 
-user = None
-password = None
+user = "apchoudh"
+password = "200537263"
 host = 'classdb2.csc.ncsu.edu'
 
 def connectDB():
     print("\nProvide Database Credentials.")
-    user = input("Username: ")
-    password = input("Password: ")
+    # user = input("Username: ")
+    # password = input("Password: ")
     try:
         reservationConnection = mysql.connector.connect(
             user=user,
