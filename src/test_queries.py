@@ -10,8 +10,26 @@ def execute_query(query_num, param_list):
     # TODO:
     # Write queries here
     queries = {
-        1: "select count(section_id) from section where chapter_id = 'chap01' and textbook_id = %s;",
-        2: "SELECT * FROM textbook;",
+        1: "SELECT COUNT(section_id) FROM section WHERE chapter_id = 'chap01' AND textbook_id = %s;",
+        2: """SELECT 
+                c.title AS Course_Title,
+                u.first_name AS Person_First_Name,
+                u.last_name AS Person_Last_Name,
+                CASE 
+                    WHEN f.fac_id IS NOT NULL THEN 'Faculty'
+                    WHEN ta.ta_id IS NOT NULL THEN 'Teaching Assistant'
+                END AS Role
+            FROM 
+                course c
+            LEFT JOIN 
+                faculty f ON c.fac_id = f.fac_id
+            LEFT JOIN 
+                teaching_assistant ta ON c.course_id = ta.course_id
+            LEFT JOIN 
+                user u ON (u.user_id = f.fac_id OR u.user_id = ta.ta_id)
+            ORDER BY 
+                c.title, Role, u.first_name, u.last_name;
+            """,
         3: """SELECT c.course_id, c.fac_id AS faculty_member, COUNT(e.stud_id) AS total_students
             FROM course c
             JOIN active_course ac ON c.course_id = ac.course_id
@@ -136,10 +154,9 @@ def no_params():
 
 get_query_params = {
     "1": params_for_query_1,
-    # "2": params_for_query_2,
-     "3": no_params,
-     "4": no_params,
-    # "4": params_for_query_4,
+    "2": no_params,
+    "3": no_params,
+    "4": no_params,
     "5" : no_params,
     "6": no_params,
     "7": no_params
