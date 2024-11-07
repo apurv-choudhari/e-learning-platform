@@ -228,7 +228,9 @@ def submit_answers(user_id, textbook_id, chapter_id, section_id, block_id, answe
                 continue
 
             correct_answer = correct_answer_data[0]
-            score = 3 if user_answer == correct_answer else 1
+            score = 3 if int(user_answer) == int(correct_answer) else 1
+
+            print(f"Question ID: {question_id}, User Answer: {user_answer}, Correct Answer: {correct_answer}, Assigned Score: {score}")
 
             timestamp = datetime.datetime.now()
             cursor.execute("""INSERT INTO score (course_id, textbook_id, chapter_id, section_id, block_id,
@@ -238,7 +240,7 @@ def submit_answers(user_id, textbook_id, chapter_id, section_id, block_id, answe
                             score, timestamp, user_id))
 
         reservationConnection.commit()
-        print("Scores submitted successfully.")
+        print("Scores submitted successfully.", score)
 
     except mysql.connector.Error as err:
         print('Error:', err)
