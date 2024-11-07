@@ -26,7 +26,7 @@ password = "200537263"
 host = 'classdb2.csc.ncsu.edu'
 
 def connectDB():
-    print("\nProvide Database Credentials.")
+    # print("\nProvide Database Credentials.")
     # user = input("Username: ")
     # password = input("Password: ")
     try:
