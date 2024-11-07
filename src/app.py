@@ -57,7 +57,7 @@ def main_menu():
         _, cursor = mdb.connectDB()
         mdb.clearAll(cursor)
         return
-    if args.run:
+    elif args.run:
         setupDB()
         print("Welcome to ZyBooks Terminal Application")
         while True:
@@ -104,6 +104,8 @@ def main_menu():
                     ta_flow.ta_flow(user_id)
             elif choice == '5':
                 test_user_queries()
+    else:
+        parser.print_help()
 
 if __name__ == "__main__":
     main_menu()
